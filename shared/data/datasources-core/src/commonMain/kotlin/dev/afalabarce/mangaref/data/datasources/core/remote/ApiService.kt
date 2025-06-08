@@ -1,17 +1,13 @@
 package dev.afalabarce.mangaref.data.datasources.core.remote
 
-import de.jensklingenberg.ktorfit.http.Body
-import de.jensklingenberg.ktorfit.http.GET
-import de.jensklingenberg.ktorfit.http.POST
+import dev.afalabarce.mangaref.data.datasources.core.features.characters.remote.DragonBallCharactersApi
+import dev.afalabarce.mangaref.data.datasources.core.features.planets.remote.DragonBallPlanetsApi
 
-interface ApiService {
-    @GET("/api/values")
-    suspend fun getAllItems(): List<String>
-
-    @POST("/api/values")
-    suspend fun putAllItems(@Body items: List<String>)
-
+class ApiService(
+    val charactersApi: DragonBallCharactersApi,
+    val planetsApi: DragonBallPlanetsApi
+) {
     companion object {
-        const val API_URL = "https://your.own.api"
+        const val API_URL = "https://dragonball-api.com"
     }
 }
