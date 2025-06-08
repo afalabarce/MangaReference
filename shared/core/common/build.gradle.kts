@@ -29,10 +29,12 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(libs.bundles.layer.core.common)
+            implementation(libs.bundles.common.tests)
         }
 
         commonTest.dependencies {
             implementation(kotlin("test"))
+
         }
 
         androidMain.dependencies {

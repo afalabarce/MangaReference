@@ -37,6 +37,8 @@ touchlab-version = "2.1.0"
 compottie = "2.0.0-rc04"
 room = "2.7.1"
 sqlite = "2.5.1"
+kotlinx-coroutines-test = "1.10.2"
+roboelectric = "4.14.1"
 
 [libraries]
 compottie = { module = "io.github.alexzhirkevich:compottie", version.ref = "compottie" }
@@ -67,6 +69,8 @@ koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-core-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 koin-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin" }
 koin-navigation = { module = "io.insert-koin:koin-compose-viewmodel-navigation", version.ref = "koin" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines-test" }
+koinTest = { module = "io.insert-koin:koin-test", version.ref = "koin" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
@@ -105,6 +109,7 @@ coil-network = { group = "io.coil-kt.coil3", name = "coil-network-ktor3", versio
 coil-compose-core = { module = "io.coil-kt.coil3:coil-compose-core", version.ref = "coil-version" }
 touchlab-stately-isolate = { module = "co.touchlab:stately-isolate", version.ref = "touchlab-version" }
 touchlab-stately-iso-collections = { module = "co.touchlab:stately-iso-collections", version.ref = "touchlab-version" }
+roboelectric-test-runner = { module = "org.robolectric:robolectric", version.ref = "roboelectric" }
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
@@ -220,6 +225,11 @@ android-data-core = [
 
 ios-data-core = [
     "ktor-client-ios",
+]
+
+common-tests = [
+    "koinTest",
+    "kotlinx-coroutines-test"
 ]
 
 [plugins]

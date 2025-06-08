@@ -41,6 +41,11 @@ kotlin {
 
         commonTest.dependencies {
             implementation(kotlin("test"))
+            implementation(libs.bundles.common.tests)
+        }
+
+        androidUnitTest.dependencies {
+            implementation(libs.roboelectric.test.runner)
         }
 
         androidMain.dependencies {
