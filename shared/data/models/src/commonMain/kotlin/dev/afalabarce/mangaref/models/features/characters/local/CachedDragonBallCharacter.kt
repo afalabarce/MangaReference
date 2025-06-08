@@ -25,4 +25,6 @@ data class CachedDragonBallCharacter(
     val image: String,
     @ColumnInfo(name = "affiliation")
     val affiliation: String,
+    @ColumnInfo(name = "is_favorite")
+    val isFavorite: Boolean,
 )
