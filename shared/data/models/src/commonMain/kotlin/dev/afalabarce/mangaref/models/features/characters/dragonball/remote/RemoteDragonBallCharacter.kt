@@ -1,12 +1,12 @@
 package dev.afalabarce.mangaref.models.features.characters.dragonball.remote
 
-import dev.afalabarce.mangaref.models.features.planets.dragonball.remote.DragonBallPlanet
-import dev.afalabarce.mangaref.models.features.transformations.dragonball.remote.DragonBallTransformation
+import dev.afalabarce.mangaref.models.features.planets.dragonball.remote.RemoteDragonBallPlanet
+import dev.afalabarce.mangaref.models.features.transformations.dragonball.remote.RemoteDragonBallTransformation
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class DragonBallCharacter(
+data class RemoteDragonBallCharacter(
     @SerialName("id")
     val id: Long,
     @SerialName("name")
@@ -26,7 +26,7 @@ data class DragonBallCharacter(
     @SerialName("affiliation")
     val affiliation: String,
     @SerialName("transformations")
-    val transformations: List<DragonBallTransformation>,
+    val transformations: List<RemoteDragonBallTransformation>,
     @SerialName("originPlanet")
-    val originPlanet: DragonBallPlanet,
+    val originPlanet: RemoteDragonBallPlanet,
 )
