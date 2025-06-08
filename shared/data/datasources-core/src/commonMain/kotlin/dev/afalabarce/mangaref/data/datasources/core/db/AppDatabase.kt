@@ -7,7 +7,10 @@ import androidx.room.RoomDatabase
 import androidx.room.RoomDatabaseConstructor
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import dev.afalabarce.mangaref.data.datasources.core.features.characters.local.DragonBallCharactersDao
+import dev.afalabarce.mangaref.data.datasources.core.features.favorites.FavoritesDao
+import dev.afalabarce.mangaref.data.datasources.core.features.planets.local.DragonBallPlanetsDao
 import dev.afalabarce.mangaref.models.features.characters.local.CachedDragonBallCharacter
+import dev.afalabarce.mangaref.models.features.planets.local.CachedDragonBallPlanet
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 
@@ -18,7 +21,8 @@ expect object AppDatabaseConstructor : RoomDatabaseConstructor<AppDatabase> {
 
 @Database(
     entities = [
-        CachedDragonBallCharacter::class
+        CachedDragonBallCharacter::class,
+        CachedDragonBallPlanet::class,
     ],
     version = 1,
     exportSchema = true
@@ -26,6 +30,8 @@ expect object AppDatabaseConstructor : RoomDatabaseConstructor<AppDatabase> {
 @ConstructedBy(AppDatabaseConstructor::class)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun charactersDao(): DragonBallCharactersDao
+    abstract fun favoritesDao(): FavoritesDao
+    abstract fun planetsDao(): DragonBallPlanetsDao
 
     companion object {
         val DATABASE_NAME = "AppDatabase.db"
@@ -42,5 +48,3 @@ fun getRoomDatabase(
         .setQueryCoroutineContext(Dispatchers.IO)
         .build()
 }
-
-fun getCharactersDao(appDatabase: AppDatabase): DragonBallCharactersDao = appDatabase.charactersDao()

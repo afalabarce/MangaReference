@@ -2,7 +2,6 @@ package dev.afalabarce.mangaref.data.datasources.core.di
 
 import de.jensklingenberg.ktorfit.Ktorfit
 import dev.afalabarce.mangaref.core.common.di.KoinModuleLoader
-import dev.afalabarce.mangaref.data.datasources.core.db.getCharactersDao
 import dev.afalabarce.mangaref.data.datasources.core.db.getRoomDatabase
 import dev.afalabarce.mangaref.data.datasources.core.features.characters.remote.DragonBallCharactersApi
 import dev.afalabarce.mangaref.data.datasources.core.features.characters.remote.createDragonBallCharactersApi
@@ -40,7 +39,6 @@ object DataSourceCoreDependencyInjector : KoinModuleLoader {
 
                     singleOf(::ApiService)
                     singleOf(::getRoomDatabase)
-                    singleOf(::getCharactersDao)
                     singleOf(::AppPreferencesImpl) bind AppPreferences::class
                 }
             )
