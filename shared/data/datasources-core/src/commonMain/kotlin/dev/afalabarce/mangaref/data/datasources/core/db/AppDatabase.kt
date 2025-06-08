@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.RoomDatabaseConstructor
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import dev.afalabarce.mangaref.data.datasources.core.features.characters.local.DragonBallCharactersDao
-import dev.afalabarce.mangaref.data.datasources.core.features.favorites.FavoritesDao
+import dev.afalabarce.mangaref.data.datasources.core.features.favorites.local.FavoritesDao
 import dev.afalabarce.mangaref.data.datasources.core.features.planets.local.DragonBallPlanetsDao
 import dev.afalabarce.mangaref.models.features.characters.local.CachedDragonBallCharacter
 import dev.afalabarce.mangaref.models.features.planets.local.CachedDragonBallPlanet
