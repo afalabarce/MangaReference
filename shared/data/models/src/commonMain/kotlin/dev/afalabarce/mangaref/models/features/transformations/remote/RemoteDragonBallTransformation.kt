@@ -1,4 +1,4 @@
-package dev.afalabarce.mangaref.models.features.transformations.dragonball.remote
+package dev.afalabarce.mangaref.models.features.transformations.remote
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

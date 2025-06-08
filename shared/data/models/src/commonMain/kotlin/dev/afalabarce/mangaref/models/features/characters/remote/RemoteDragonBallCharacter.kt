@@ -1,7 +1,7 @@
-package dev.afalabarce.mangaref.models.features.characters.dragonball.remote
+package dev.afalabarce.mangaref.models.features.characters.remote
 
-import dev.afalabarce.mangaref.models.features.planets.dragonball.remote.RemoteDragonBallPlanet
-import dev.afalabarce.mangaref.models.features.transformations.dragonball.remote.RemoteDragonBallTransformation
+import dev.afalabarce.mangaref.models.features.planets.remote.RemoteDragonBallPlanet
+import dev.afalabarce.mangaref.models.features.transformations.remote.RemoteDragonBallTransformation
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

@@ -1,5 +1,6 @@
-package dev.afalabarce.mangaref.models.features.planets.dragonball.remote
+package dev.afalabarce.mangaref.models.features.planets.remote
 
+import dev.afalabarce.mangaref.models.features.characters.remote.RemoteDragonBallCharacter
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -15,4 +16,6 @@ data class RemoteDragonBallPlanet(
     val description: String,
     @SerialName("image")
     val image: String,
+    @SerialName("characters")
+    val characters: List<RemoteDragonBallCharacter>
 )
