@@ -1,6 +1,5 @@
 package dev.afalabarce.mangaref.data.datasources.features.favorites
 
-import androidx.room.Query
 import dev.afalabarce.mangaref.models.features.characters.local.CachedDragonBallCharacter
 import kotlinx.coroutines.flow.Flow
 

@@ -11,5 +11,5 @@ interface DragonBallCharactersApi {
     suspend fun getAllCharacters(@Query("page") page: Int, @Query("limit") limit: Int): PaginatedResult<RemoteDragonBallCharacter>
 
     @GET("/api/characters/{characterId}")
-    suspend fun getCharacter(@Path("characterId") characterId: Int): RemoteDragonBallCharacter
+    suspend fun getCharacter(@Path("characterId") characterId: Long): RemoteDragonBallCharacter
 }

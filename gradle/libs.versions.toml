@@ -39,7 +39,7 @@ room = "2.7.1"
 sqlite = "2.5.1"
 kotlinx-coroutines-test = "1.10.2"
 roboelectric = "4.14.1"
-
+paging = "3.3.6"
 [libraries]
 compottie = { module = "io.github.alexzhirkevich:compottie", version.ref = "compottie" }
 compottie-dot = { module = "io.github.alexzhirkevich:compottie-dot", version.ref = "compottie" }
@@ -98,7 +98,7 @@ napier = { module = "io.github.aakira:napier", version.ref = "napier" }
 voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
 jetpack-datastore = { module = "androidx.datastore:datastore-preferences-core", version.ref = "datastore-version" }
 constraint-layout = { module = "tech.annexflow.compose:constraintlayout-compose-multiplatform", version.ref = "constraint-layout-version" }
-
+paging-common = { module = "androidx.paging:paging-common", version.ref = "paging" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -126,6 +126,7 @@ layer-core-common = [
     "com-google-code-gson",
     "kotlin-stdlib",
     "touchlab-dep",
+    "paging-common",
 ]
 
 layer-core-viewmodels = [
