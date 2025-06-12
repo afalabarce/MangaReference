@@ -39,7 +39,7 @@ room = "2.7.1"
 sqlite = "2.5.1"
 kotlinx-coroutines-test = "1.10.2"
 roboelectric = "4.14.1"
-paging = "3.3.6"
+paging = "3.3.0-alpha02-0.5.1"
 [libraries]
 compottie = { module = "io.github.alexzhirkevich:compottie", version.ref = "compottie" }
 compottie-dot = { module = "io.github.alexzhirkevich:compottie-dot", version.ref = "compottie" }
@@ -82,6 +82,7 @@ ktor-client-core-jvm = { module = "io.ktor:ktor-client-core-jvm", version.ref = 
 ktor-client-curl = { module = "io.ktor:ktor-client-curl", version.ref = "ktorVersion" }
 ktor-client-ios = { module = "io.ktor:ktor-client-ios", version.ref = "ktorVersion" }
 ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktorVersion" }
+ktor-client-json = { module = "io.ktor:ktor-client-json", version.ref = "ktorVersion"}
 ktorfit-converter-flow = { module = "de.jensklingenberg.ktorfit:ktorfit-converters-flow", version.ref = "ktorfit-converter-version"}
 ktorfit-converter-call = { module = "de.jensklingenberg.ktorfit:ktorfit-converters-call", version.ref = "ktorfit-converter-version"}
 ktor-client-mock = { module = "io.ktor:ktor-client-mock", version.ref = "ktorVersion" }
@@ -98,7 +99,9 @@ napier = { module = "io.github.aakira:napier", version.ref = "napier" }
 voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
 jetpack-datastore = { module = "androidx.datastore:datastore-preferences-core", version.ref = "datastore-version" }
 constraint-layout = { module = "tech.annexflow.compose:constraintlayout-compose-multiplatform", version.ref = "constraint-layout-version" }
-paging-common = { module = "androidx.paging:paging-common", version.ref = "paging" }
+paging-common = { module = "app.cash.paging:paging-common", version.ref = "paging" }
+paging-compose = { module = "app.cash.paging:paging-compose-common", version.ref = "paging" }
+paging-testing = { module = "app.cash.paging:paging-testing", version.ref = "paging" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -141,6 +144,7 @@ layer-core-viewmodels = [
     "kotlin-stdlib",
     "koin-compose",
     "koin-viewmodel",
+    "paging-common"
 ]
 
 layer-core-ui = [
@@ -167,6 +171,8 @@ layer-core-ui = [
     "compottie-dot",
     "compottie-network",
     "compottie-resources",
+    "paging-common",
+    "paging-compose",
 ]
 
 layer-data-datasources-core = [
@@ -230,7 +236,8 @@ ios-data-core = [
 
 common-tests = [
     "koinTest",
-    "kotlinx-coroutines-test"
+    "kotlinx-coroutines-test",
+    "paging-testing",
 ]
 
 [plugins]

@@ -19,7 +19,7 @@ interface DragonBallCharactersDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCharacter(character: CachedDragonBallCharacter)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertAllCharacters(characters: List<CachedDragonBallCharacter>)
 
 }

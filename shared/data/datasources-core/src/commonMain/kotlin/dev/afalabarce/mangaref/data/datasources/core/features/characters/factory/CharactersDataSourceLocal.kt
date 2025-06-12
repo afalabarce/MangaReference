@@ -11,9 +11,7 @@ class CharactersDataSourceLocal(private val appDatabase: AppDatabase): Character
     override fun getAllCharacters(
         page: Int,
         limit: Int
-    ): Flow<List<CachedDragonBallCharacter>> {
-        TODO("Not yet implemented")
-    }
+    ): Flow<List<CachedDragonBallCharacter>> = appDatabase.charactersDao().getAllCharacters(page, limit)
     override fun getAllRemoteCharacters(
         page: Int,
         limit: Int
@@ -30,6 +28,6 @@ class CharactersDataSourceLocal(private val appDatabase: AppDatabase): Character
     }
 
     override suspend fun insertAllCharacters(characters: List<CachedDragonBallCharacter>) {
-        TODO("Not yet implemented")
+        this.appDatabase.charactersDao().insertAllCharacters(characters)
     }
 }

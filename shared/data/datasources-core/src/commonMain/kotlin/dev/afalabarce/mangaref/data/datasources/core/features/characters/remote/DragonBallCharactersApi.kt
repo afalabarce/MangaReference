@@ -7,9 +7,9 @@ import dev.afalabarce.mangaref.models.features.characters.remote.RemoteDragonBal
 import dev.afalabarce.mangaref.models.features.pagination.PaginatedResult
 
 interface DragonBallCharactersApi {
-    @GET("/api/characters")
+    @GET("api/characters")
     suspend fun getAllCharacters(@Query("page") page: Int, @Query("limit") limit: Int): PaginatedResult<RemoteDragonBallCharacter>
 
-    @GET("/api/characters/{characterId}")
+    @GET("api/characters/{characterId}")
     suspend fun getCharacter(@Path("characterId") characterId: Long): RemoteDragonBallCharacter
 }

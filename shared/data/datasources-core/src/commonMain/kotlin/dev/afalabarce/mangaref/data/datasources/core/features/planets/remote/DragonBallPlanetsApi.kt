@@ -7,9 +7,9 @@ import dev.afalabarce.mangaref.models.features.pagination.PaginatedResult
 import dev.afalabarce.mangaref.models.features.planets.remote.RemoteDragonBallPlanet
 
 interface DragonBallPlanetsApi {
-    @GET("/api/planets")
+    @GET("api/planets")
     suspend fun getAllPlanets(@Query("page") page: Int, @Query("limit") limit: Int): PaginatedResult<RemoteDragonBallPlanet>
 
-    @GET("/api/planets/{planetId}")
+    @GET("api/planets/{planetId}")
     suspend fun getPlanet(@Path("planetId") planetId: Int): RemoteDragonBallPlanet
 }

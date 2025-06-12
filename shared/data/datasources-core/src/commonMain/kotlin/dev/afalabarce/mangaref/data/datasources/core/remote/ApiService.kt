@@ -8,6 +8,6 @@ class ApiService(
     val planetsApi: DragonBallPlanetsApi
 ) {
     companion object {
-        const val API_URL = "https://dragonball-api.com"
+        const val API_URL = "https://dragonball-api.com/"
     }
 }

@@ -18,6 +18,9 @@ import dev.afalabarce.mangaref.data.datasources.features.characters.CharactersDa
 import dev.afalabarce.mangaref.data.datasources.features.favorites.FavoritesDatasource
 import dev.afalabarce.mangaref.data.datasources.features.planets.PlanetsDatasource
 import dev.afalabarce.mangaref.data.datasources.features.preferences.AppPreferences
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.serialization.kotlinx.json.json
+import kotlinx.serialization.json.Json
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
@@ -35,6 +38,15 @@ object DataSourceCoreDependencyInjector : KoinModuleLoader {
                     single<DragonBallCharactersApi> {
                         Ktorfit
                             .Builder()
+                            .httpClient {
+                                install(ContentNegotiation) {
+                                    json(Json {
+                                        isLenient = true
+                                        ignoreUnknownKeys = true
+                                        prettyPrint = true
+                                    })
+                                }
+                            }
                             .baseUrl(ApiService.API_URL)
                             .build()
                             .createDragonBallCharactersApi()
@@ -42,6 +54,15 @@ object DataSourceCoreDependencyInjector : KoinModuleLoader {
                     single<DragonBallPlanetsApi> {
                         Ktorfit
                             .Builder()
+                            .httpClient {
+                                install(ContentNegotiation) {
+                                    json(Json {
+                                        isLenient = true
+                                        ignoreUnknownKeys = true
+                                        prettyPrint = true
+                                    })
+                                }
+                            }
                             .baseUrl(ApiService.API_URL)
                             .build()
                             .createDragonBallPlanetsApi()
@@ -50,10 +71,10 @@ object DataSourceCoreDependencyInjector : KoinModuleLoader {
                     singleOf(::ApiService)
                     singleOf(::getRoomDatabase)
                     singleOf(::AppPreferencesImpl) bind AppPreferences::class
-                    factoryOf(::CharactersDataSourceLocal){ named("localCharacters") } bind CharactersDatasource::class
-                    factoryOf(::CharactersDataSourceRemote){ named("remoteCharacters") } bind CharactersDatasource::class
-                    factoryOf(::PlanetsDatasourceLocal){ named("localPlanets") } bind PlanetsDatasource::class
-                    factoryOf(::PlanetsDatasourceRemote){ named("remotePlanets") } bind PlanetsDatasource::class
+                    factory <CharactersDatasource>(named("localCharacters")){ CharactersDataSourceLocal(get()) }
+                    factory <CharactersDatasource>(named("remoteCharacters")){ CharactersDataSourceRemote(get()) }
+                    factory <PlanetsDatasource>(named("localPlanets")){ PlanetsDatasourceLocal(get()) }
+                    factory <PlanetsDatasource>(named("remotePlanets")){ PlanetsDatasourceRemote(get()) }
                     factoryOf(::FavoritesDatasourceImpl) bind FavoritesDatasource::class
                 }
             )
