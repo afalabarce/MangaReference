@@ -19,9 +19,7 @@ class CharactersDataSourceLocal(private val appDatabase: AppDatabase): Character
         TODO("Not yet implemented")
     }
 
-    override fun getCharacter(characterId: Long): Flow<CachedDragonBallCharacter> {
-        TODO("Not yet implemented")
-    }
+    override fun getCharacter(characterId: Long): Flow<CachedDragonBallCharacter> = appDatabase.charactersDao().getCharacter(characterId)
 
     override fun getRemoteCharacter(characterId: Long): Flow<RemoteDragonBallCharacter> {
         TODO("Not yet implemented")

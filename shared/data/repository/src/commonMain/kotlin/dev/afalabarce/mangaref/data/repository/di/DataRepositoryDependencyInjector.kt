@@ -4,8 +4,10 @@ import dev.afalabarce.mangaref.core.common.di.KoinModuleLoader
 import dev.afalabarce.mangaref.data.repository.features.characters.factory.CharactersFactory
 import dev.afalabarce.mangaref.data.repository.features.characters.repository.CharactersRepositoryImpl
 import dev.afalabarce.mangaref.data.repository.features.planets.factory.PlanetsFactory
+import dev.afalabarce.mangaref.data.repository.features.planets.repository.PlanetsRepositoryImpl
 import dev.afalabarce.mangaref.data.repository.features.preferences.PreferencesRepositoryImpl
 import dev.afalabarce.mangaref.domain.repository.features.characters.CharactersRepository
+import dev.afalabarce.mangaref.domain.repository.features.planets.PlanetsRepository
 import dev.afalabarce.mangaref.domain.repository.features.preferences.PreferencesRepository
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.factoryOf
@@ -31,7 +33,7 @@ object DataRepositoryDependencyInjector : KoinModuleLoader {
                     )
                 }
                 factoryOf(::CharactersRepositoryImpl) bind CharactersRepository::class
-                //factoryOf(::PlanetsRepositoryImpl) bind PlanetsRepository::class
+                factoryOf(::PlanetsRepositoryImpl) bind PlanetsRepository::class
             }
         )
 }

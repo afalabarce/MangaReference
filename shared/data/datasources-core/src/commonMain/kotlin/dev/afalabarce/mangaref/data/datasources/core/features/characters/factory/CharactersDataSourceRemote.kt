@@ -11,6 +11,15 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 
 class CharactersDataSourceRemote(private val apiService: ApiService): CharactersDatasource {
+    override fun getAllRemoteCharacters(
+        page: Int,
+        limit: Int
+    ): Flow<PaginatedResult<RemoteDragonBallCharacter>> = flow { emit(apiService.charactersApi.getAllCharacters(page, limit)) }
+
+    override fun getRemoteCharacter(characterId: Long): Flow<RemoteDragonBallCharacter> = flow {
+        emit(apiService.charactersApi.getCharacter(characterId))
+    }
+
     override fun getAllCharacters(
         page: Int,
         limit: Int
@@ -18,16 +27,11 @@ class CharactersDataSourceRemote(private val apiService: ApiService): Characters
         TODO("Not yet implemented")
     }
 
-    override fun getAllRemoteCharacters(
-        page: Int,
-        limit: Int
-    ): Flow<PaginatedResult<RemoteDragonBallCharacter>> = flow { emit(apiService.charactersApi.getAllCharacters(page, limit)) }
-
     override fun getCharacter(characterId: Long): Flow<CachedDragonBallCharacter> {
         TODO("Not yet implemented")
     }
 
-    override fun getRemoteCharacter(characterId: Long): Flow<RemoteDragonBallCharacter> = flow { emit(apiService.charactersApi.getCharacter(characterId)) }
+
 
     override suspend fun insertAllCharacters(characters: List<CachedDragonBallCharacter>) {
         TODO("Not yet implemented")

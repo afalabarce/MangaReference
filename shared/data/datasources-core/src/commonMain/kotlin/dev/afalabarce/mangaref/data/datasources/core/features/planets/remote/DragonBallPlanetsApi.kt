@@ -11,5 +11,5 @@ interface DragonBallPlanetsApi {
     suspend fun getAllPlanets(@Query("page") page: Int, @Query("limit") limit: Int): PaginatedResult<RemoteDragonBallPlanet>
 
     @GET("api/planets/{planetId}")
-    suspend fun getPlanet(@Path("planetId") planetId: Int): RemoteDragonBallPlanet
+    suspend fun getPlanet(@Path("planetId") planetId: Long): RemoteDragonBallPlanet
 }
