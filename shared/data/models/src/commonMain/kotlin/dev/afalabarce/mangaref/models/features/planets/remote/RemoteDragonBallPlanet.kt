@@ -16,6 +16,6 @@ data class RemoteDragonBallPlanet(
     val description: String,
     @SerialName("image")
     val image: String,
-    //@SerialName("characters")
-    //val characters: List<RemoteDragonBallCharacter>
+    @SerialName("characters")
+    val characters: List<RemoteDragonBallCharacter> = emptyList()
 )

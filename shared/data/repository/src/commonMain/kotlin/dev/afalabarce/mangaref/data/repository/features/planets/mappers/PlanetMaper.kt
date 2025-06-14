@@ -1,5 +1,6 @@
 package dev.afalabarce.mangaref.data.repository.features.planets.mappers
 
+import dev.afalabarce.mangaref.data.repository.features.characters.mappers.toDomain
 import dev.afalabarce.mangaref.domain.models.features.planets.DragonBallPlanet
 import dev.afalabarce.mangaref.models.features.planets.local.CachedDragonBallPlanet
 import dev.afalabarce.mangaref.models.features.planets.remote.RemoteDragonBallPlanet
@@ -17,7 +18,7 @@ fun RemoteDragonBallPlanet.toDomain(): DragonBallPlanet = DragonBallPlanet(
     name = name,
     description = description,
     image = image,
-    residents =  emptyList() // characters.map { it.toDomain() },
+    residents =  characters.map { it.toDomain() },
 )
 
 fun RemoteDragonBallPlanet.toCached(): CachedDragonBallPlanet = CachedDragonBallPlanet(

@@ -73,6 +73,12 @@ kotlin {
     }
 }
 
+compose.resources {
+    publicResClass = true
+    packageOfResClass = "${BuildVersion.environment.applicationId}.presentation.ui"
+    generateResClass = auto
+}
+
 android {
     namespace = "${BuildVersion.environment.applicationId}.presentation.ui"
     compileSdk = BuildVersion.android.compileSdk

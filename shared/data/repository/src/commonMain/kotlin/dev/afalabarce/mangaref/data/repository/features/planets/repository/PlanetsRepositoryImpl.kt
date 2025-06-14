@@ -2,13 +2,12 @@ package dev.afalabarce.mangaref.data.repository.features.planets.repository
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import dev.afalabarce.mangaref.data.repository.features.characters.mappers.toCached
-import dev.afalabarce.mangaref.data.repository.features.characters.mappers.toDomain
 import dev.afalabarce.mangaref.data.repository.features.planets.factory.PlanetsFactory
 import dev.afalabarce.mangaref.data.repository.features.planets.mappers.toCached
 import dev.afalabarce.mangaref.data.repository.features.planets.mappers.toDomain
 import dev.afalabarce.mangaref.domain.models.features.planets.DragonBallPlanet
 import dev.afalabarce.mangaref.domain.repository.features.planets.PlanetsRepository
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
@@ -55,6 +54,7 @@ internal class PlanetsRepositoryImpl internal constructor(private val factory: P
                 )
             }
         } catch (e: Exception) {
+            Napier.w("Error AFA: ${e.message}")
             PagingSource.LoadResult.Error(e)
         }
     }

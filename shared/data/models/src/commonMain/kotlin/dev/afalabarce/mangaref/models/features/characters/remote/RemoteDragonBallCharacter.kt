@@ -25,8 +25,8 @@ data class RemoteDragonBallCharacter(
     val image: String,
     @SerialName("affiliation")
     val affiliation: String,
-    //@SerialName("transformations")
-    //val transformations: List<RemoteDragonBallTransformation>?,
-    //@SerialName("originPlanet")
-    //val originPlanet: RemoteDragonBallPlanet?,
+    @SerialName("transformations")
+    val transformations: List<RemoteDragonBallTransformation> = emptyList(),
+    @SerialName("originPlanet")
+    val originPlanet: RemoteDragonBallPlanet? = null,
 )

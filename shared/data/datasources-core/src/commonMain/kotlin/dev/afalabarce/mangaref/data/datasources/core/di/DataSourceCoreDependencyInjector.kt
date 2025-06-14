@@ -18,8 +18,14 @@ import dev.afalabarce.mangaref.data.datasources.features.characters.CharactersDa
 import dev.afalabarce.mangaref.data.datasources.features.favorites.FavoritesDatasource
 import dev.afalabarce.mangaref.data.datasources.features.planets.PlanetsDatasource
 import dev.afalabarce.mangaref.data.datasources.features.preferences.AppPreferences
+import io.github.aakira.napier.Napier
+import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logger
+import io.ktor.client.plugins.logging.Logging
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.factoryOf
@@ -31,6 +37,7 @@ import org.koin.dsl.module
 expect fun getPlatformInjects(): List<Module>
 
 object DataSourceCoreDependencyInjector : KoinModuleLoader {
+    @OptIn(ExperimentalSerializationApi::class)
     override val modules: List<Module>
         get() = getPlatformInjects().union(
             listOf(
@@ -38,15 +45,7 @@ object DataSourceCoreDependencyInjector : KoinModuleLoader {
                     single<DragonBallCharactersApi> {
                         Ktorfit
                             .Builder()
-                            .httpClient {
-                                install(ContentNegotiation) {
-                                    json(Json {
-                                        isLenient = true
-                                        ignoreUnknownKeys = true
-                                        prettyPrint = true
-                                    })
-                                }
-                            }
+                            .httpClient (httpClient)
                             .baseUrl(ApiService.API_URL)
                             .build()
                             .createDragonBallCharactersApi()
@@ -54,15 +53,7 @@ object DataSourceCoreDependencyInjector : KoinModuleLoader {
                     single<DragonBallPlanetsApi> {
                         Ktorfit
                             .Builder()
-                            .httpClient {
-                                install(ContentNegotiation) {
-                                    json(Json {
-                                        isLenient = true
-                                        ignoreUnknownKeys = true
-                                        prettyPrint = true
-                                    })
-                                }
-                            }
+                            .httpClient(httpClient)
                             .baseUrl(ApiService.API_URL)
                             .build()
                             .createDragonBallPlanetsApi()
@@ -79,4 +70,25 @@ object DataSourceCoreDependencyInjector : KoinModuleLoader {
                 }
             )
         ).toList()
+
+    @OptIn(ExperimentalSerializationApi::class)
+    private val httpClient = HttpClient {
+        install(Logging) {
+            level = LogLevel.ALL
+            logger = object : Logger {
+                override fun log(message: String) {
+                    Napier.v(message = message, tag = "HTTP Client Data:")
+                }
+            }
+        }
+        install(ContentNegotiation) {
+            json(Json {
+                explicitNulls = true
+                isLenient = true
+                ignoreUnknownKeys = true
+                prettyPrint = true
+                allowTrailingComma = true
+            })
+        }
+    }
 }
