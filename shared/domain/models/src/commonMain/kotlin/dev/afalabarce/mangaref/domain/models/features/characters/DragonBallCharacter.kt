@@ -1,7 +1,9 @@
 package dev.afalabarce.mangaref.domain.models.features.characters
 
 import dev.afalabarce.mangaref.domain.models.features.planets.DragonBallPlanet
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class DragonBallCharacter(
     val id: Long,
     val name: String,

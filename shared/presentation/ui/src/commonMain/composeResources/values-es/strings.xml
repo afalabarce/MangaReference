@@ -13,4 +13,9 @@
     <string name="back">Atrás</string>
 
     <string name="no_data_available">No hay datos disponibles</string>
+    <string name="no_internet_connection">No hay conexión a internet</string>
+    <string name="no_results_found">No se encontraron resultados</string>
+    <string name="retry">Reintentar</string>
+    <string name="characters">Personajes</string>
+    <string name="planets">Planetas</string>
 </resources>
