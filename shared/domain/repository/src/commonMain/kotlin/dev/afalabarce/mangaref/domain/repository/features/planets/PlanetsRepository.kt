@@ -6,4 +6,8 @@ import kotlinx.coroutines.flow.Flow
 
 abstract class PlanetsRepository: PagingSource<Int, DragonBallPlanet>() {
     abstract fun getPlanetById(planetId: Long): Flow<DragonBallPlanet>
+
+    companion object {
+        const val PAGE_SIZE = 10
+    }
 }

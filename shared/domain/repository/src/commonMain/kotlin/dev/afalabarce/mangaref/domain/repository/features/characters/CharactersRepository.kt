@@ -6,4 +6,8 @@ import kotlinx.coroutines.flow.Flow
 
 abstract class CharactersRepository: PagingSource<Int, DragonBallCharacter>() {
     abstract fun getCharacterById(characterId: Long): Flow<DragonBallCharacter>
+
+    companion object {
+        const val PAGE_SIZE = 10
+    }
 }

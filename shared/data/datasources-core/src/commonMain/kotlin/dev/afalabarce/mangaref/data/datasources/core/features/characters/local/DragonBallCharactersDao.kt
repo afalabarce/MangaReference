@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface DragonBallCharactersDao {
-    @Query("select * from characters order by id asc limit :limit offset :page*:limit")
+    @Query("select distinct * from characters order by id asc limit :limit offset :page*:limit")
     fun getAllCharacters(page: Int, limit: Int): Flow<List<CachedDragonBallCharacter>>
 
     @Query("select * from characters where id=:characterId")

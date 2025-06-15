@@ -6,8 +6,8 @@ import dev.afalabarce.mangaref.domain.models.features.planets.DragonBallPlanet
 import dev.afalabarce.mangaref.domain.repository.features.planets.PlanetsRepository
 
 class GetAllPlanetsUseCase(private val planetsRepository: PlanetsRepository) {
-    operator fun invoke(limit: Int): Pager<Int, DragonBallPlanet> {
-        val config = PagingConfig(pageSize = limit)
+    operator fun invoke(): Pager<Int, DragonBallPlanet> {
+        val config = PagingConfig(pageSize = PlanetsRepository.PAGE_SIZE)
         return Pager(
             config = config,
             pagingSourceFactory = ::planetsRepository,

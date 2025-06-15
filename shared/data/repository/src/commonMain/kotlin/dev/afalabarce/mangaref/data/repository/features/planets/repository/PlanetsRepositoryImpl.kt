@@ -6,6 +6,7 @@ import dev.afalabarce.mangaref.data.repository.features.planets.factory.PlanetsF
 import dev.afalabarce.mangaref.data.repository.features.planets.mappers.toCached
 import dev.afalabarce.mangaref.data.repository.features.planets.mappers.toDomain
 import dev.afalabarce.mangaref.domain.models.features.planets.DragonBallPlanet
+import dev.afalabarce.mangaref.domain.repository.features.characters.CharactersRepository
 import dev.afalabarce.mangaref.domain.repository.features.planets.PlanetsRepository
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.Flow
@@ -35,20 +36,20 @@ internal class PlanetsRepositoryImpl internal constructor(private val factory: P
         val pageNumber = params.key ?: 1
         return try {
             val prevKey = if (pageNumber == 1) null else pageNumber - 1
-            val cachedResponse = factory.local.getAllPlanets(pageNumber, params.loadSize).first()
+            val cachedResponse = factory.local.getAllPlanets(pageNumber, PlanetsRepository.PAGE_SIZE).first()
 
-            if (cachedResponse.size < params.loadSize) {
-                val response = factory.remote.getAllRemotePlanets(page = pageNumber, limit = params.loadSize).first()
+            if (cachedResponse.size < PlanetsRepository.PAGE_SIZE) {
+                val response = factory.remote.getAllRemotePlanets(page = pageNumber, limit = PlanetsRepository.PAGE_SIZE).first()
                 val nextKey = if (pageNumber < response.meta.totalPages) pageNumber + 1 else null
 
                 factory.local.insertAllPlanets(response.items.map { remote -> remote.toCached() })
 
-                PagingSource.LoadResult.Page(data = response.items.map { remote -> remote.toDomain() }, prevKey = prevKey, nextKey = nextKey)
+                PagingSource.LoadResult.Page(data = response.items.take(CharactersRepository.PAGE_SIZE).map { remote -> remote.toDomain() }, prevKey = prevKey, nextKey = nextKey)
             } else {
                 val nextKey = pageNumber + 1
 
                 PagingSource.LoadResult.Page(
-                    data = cachedResponse.map { cached -> cached.toDomain() },
+                    data = cachedResponse.take(CharactersRepository.PAGE_SIZE).map { cached -> cached.toDomain() },
                     prevKey = prevKey,
                     nextKey = nextKey
                 )

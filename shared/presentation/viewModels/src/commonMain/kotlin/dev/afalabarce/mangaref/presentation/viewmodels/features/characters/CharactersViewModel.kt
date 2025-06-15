@@ -12,9 +12,5 @@ import kotlin.getValue
 class CharactersViewModel(
     private val getAllCharactersUseCase: GetAllCharactersUseCase
 ): ViewModel() {
-    val characters: Flow<PagingData<DragonBallCharacter>> by lazy { getAllCharactersUseCase(limit = PAGE_SIZE).flow.cachedIn(viewModelScope) }
-
-    companion object {
-        const val PAGE_SIZE = 10
-    }
+    val characters: Flow<PagingData<DragonBallCharacter>> by lazy { getAllCharactersUseCase().flow.cachedIn(viewModelScope) }
 }

@@ -11,9 +11,5 @@ import kotlinx.coroutines.flow.Flow
 class PlanetsViewModel(
     private val getAllPlanetsUseCase: GetAllPlanetsUseCase
 ): ViewModel() {
-    val planets: Flow<PagingData<DragonBallPlanet>> by lazy { getAllPlanetsUseCase(limit = PAGE_SIZE).flow.cachedIn(viewModelScope) }
-
-    companion object {
-        const val PAGE_SIZE = 10
-    }
+    val planets: Flow<PagingData<DragonBallPlanet>> by lazy { getAllPlanetsUseCase().flow.cachedIn(viewModelScope) }
 }

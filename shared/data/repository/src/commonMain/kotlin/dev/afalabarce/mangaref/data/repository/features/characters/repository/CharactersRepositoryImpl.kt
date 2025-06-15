@@ -35,20 +35,20 @@ internal class CharactersRepositoryImpl internal constructor(private val factory
         val pageNumber = params.key ?: 1
         return try {
             val prevKey = if (pageNumber == 1) null else pageNumber - 1
-            val cachedResponse = factory.local.getAllCharacters(pageNumber, params.loadSize).first()
+            val cachedResponse = factory.local.getAllCharacters(pageNumber - 1, CharactersRepository.PAGE_SIZE).first()
 
-            if (cachedResponse.size < params.loadSize) {
-                val response = factory.remote.getAllRemoteCharacters(page = pageNumber, limit = params.loadSize).first()
+            if (cachedResponse.size < CharactersRepository.PAGE_SIZE) {
+                val response = factory.remote.getAllRemoteCharacters(page = pageNumber, limit = CharactersRepository.PAGE_SIZE).first()
                 val nextKey = if (pageNumber < response.meta.totalPages) pageNumber + 1 else null
 
                 factory.local.insertAllCharacters(response.items.map { remote -> remote.toCached() })
 
-                PagingSource.LoadResult.Page(data = response.items.map { remote -> remote.toDomain() }, prevKey = prevKey, nextKey = nextKey)
+                PagingSource.LoadResult.Page(data = response.items.take(CharactersRepository.PAGE_SIZE).map { remote -> remote.toDomain() }, prevKey = prevKey, nextKey = nextKey)
             } else {
                 val nextKey = pageNumber + 1
 
                 PagingSource.LoadResult.Page(
-                    data = cachedResponse.map { cached -> cached.toDomain() },
+                    data = cachedResponse.take(CharactersRepository.PAGE_SIZE).map { cached -> cached.toDomain() },
                     prevKey = prevKey,
                     nextKey = nextKey
                 )
