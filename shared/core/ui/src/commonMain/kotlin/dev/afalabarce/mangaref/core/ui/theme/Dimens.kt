@@ -33,6 +33,7 @@ class MobileDimens(
     val focusedBorder: Dp,
     val cornerRadius: Dp,
     val statusBarSize: Dp,
+    val bottomBarHeight: Dp,
 ) {
     @Suppress("LongParameterList")
     fun copy(
@@ -61,6 +62,7 @@ class MobileDimens(
         focusedBorder: Dp = this.focusedBorder,
         cornerRadius: Dp = this.cornerRadius,
         statusBarSize: Dp = this.statusBarSize,
+        bottomBarHeight: Dp = this.bottomBarHeight,
     ): MobileDimens = MobileDimens(
         none = none,
         topSurface = topSurface,
@@ -87,6 +89,7 @@ class MobileDimens(
         focusedBorder = focusedBorder,
         cornerRadius = cornerRadius,
         statusBarSize = statusBarSize,
+        bottomBarHeight = bottomBarHeight,
     )
 }
 
@@ -117,6 +120,7 @@ fun mobileDimensions(
     focusedBorder: Dp = 4.dp,
     cornerRadius: Dp = 6.dp,
     statusBarSize: Dp = statusBarSize(),
+    bottomBarHeight: Dp = bottomBarHeight(),
 ): MobileDimens = MobileDimens(
     none = none,
     topSurface = topSurface,
@@ -143,6 +147,9 @@ fun mobileDimensions(
     focusedBorder = focusedBorder,
     cornerRadius = cornerRadius,
     statusBarSize = statusBarSize,
+    bottomBarHeight = bottomBarHeight,
 )
 
 expect fun statusBarSize(): Dp
+
+expect fun bottomBarHeight(): Dp

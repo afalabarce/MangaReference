@@ -37,3 +37,5 @@ actual fun statusBarSize(): Dp {
 
     return statusBarHeight
 }
+
+actual fun bottomBarHeight(): Dp = 92.dp

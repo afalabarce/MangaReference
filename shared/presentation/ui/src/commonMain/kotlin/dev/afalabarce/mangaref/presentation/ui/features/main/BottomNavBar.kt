@@ -3,6 +3,10 @@ package dev.afalabarce.mangaref.presentation.ui.features.main
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithContent
@@ -61,30 +66,36 @@ fun BottomNavigationBar(navController: NavController, bottomAppBarScrollBehavior
                 start = AppMaterialTheme.dimens.minStartSurface,
                 end = AppMaterialTheme.dimens.minEndSurface
             )
+            .height(AppMaterialTheme.dimens.bottomBarHeight)
             .clip(RoundedCornerShape(50)),
         scrollBehavior = bottomAppBarScrollBehavior,
         containerColor = AppMaterialTheme.colorScheme.secondaryContainer,
     ) {
-        items.forEach { item ->
-            val selected = try { currentRouteState?.destination?.hasRoute(item.key::class) ?: false } catch (e: Exception){ false }
-            NavigationBarItem(
-                selected = selected,
-                onClick = { navController.navigate(item.key) },
-                icon = {
-                    Icon(
-                        imageVector = vectorResource(item.value.second),
-                        modifier = Modifier.size(AppMaterialTheme.dimens.smallIconSize),
-                        contentDescription = null
+        Row(
+            modifier = Modifier.fillMaxSize(),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            items.forEach { item ->
+                val selected = try { currentRouteState?.destination?.hasRoute(item.key::class) ?: false } catch (e: Exception){ false }
+                NavigationBarItem(
+                    selected = selected,
+                    onClick = { navController.navigate(item.key) },
+                    icon = {
+                        Icon(
+                            imageVector = vectorResource(item.value.second),
+                            modifier = Modifier.size(AppMaterialTheme.dimens.smallIconSize),
+                            contentDescription = null
+                        )
+                    },
+                    label = { Text(stringResource(item.value.first)) },
+                    colors = NavigationBarItemDefaults.colors(
+                        selectedIconColor = AppMaterialTheme.colorScheme.secondary,
+                        selectedTextColor = AppMaterialTheme.colorScheme.secondary,
+                        unselectedIconColor = AppMaterialTheme.colorScheme.onTertiary,
+                        unselectedTextColor = AppMaterialTheme.colorScheme.onTertiary,
                     )
-                },
-                label = { Text(stringResource(item.value.first)) },
-                colors = NavigationBarItemDefaults.colors(
-                    selectedIconColor = AppMaterialTheme.colorScheme.secondary,
-                    selectedTextColor = AppMaterialTheme.colorScheme.secondary,
-                    unselectedIconColor = AppMaterialTheme.colorScheme.onTertiary,
-                    unselectedTextColor = AppMaterialTheme.colorScheme.onTertiary,
                 )
-            )
+            }
         }
     }
 }
