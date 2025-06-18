@@ -12,8 +12,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dev.afalabarce.mangaref.core.ui.theme.AppMaterialTheme
-import dev.afalabarce.mangaref.presentation.ui.CharactersScreen
-import dev.afalabarce.mangaref.presentation.ui.PlanetsScreen
+import dev.afalabarce.mangaref.presentation.ui.features.characters.CharactersScreen
+import dev.afalabarce.mangaref.presentation.ui.features.planets.PlanetsScreen
 import dev.chrisbanes.haze.hazeEffect
 import dev.chrisbanes.haze.hazeSource
 import dev.chrisbanes.haze.materials.CupertinoMaterials
