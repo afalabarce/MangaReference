@@ -41,7 +41,9 @@ data class CachedDragonBallCharacter(
     @ColumnInfo(name = "is_favorite")
     val isFavorite: Boolean,
     @ColumnInfo(name = "origin_planet_id")
-    val originPlanetId: Long?
+    val originPlanetId: Long?,
+    @ColumnInfo(name = "is_completed", defaultValue = "false")
+    val isCompleted: Boolean
 )
 
 data class CachedDragonBallCharacterModel(

@@ -60,7 +60,8 @@ fun RemoteDragonBallCharacter.toCached(): CachedDragonBallCharacterModel =
             image = image,
             affiliation = affiliation,
             isFavorite = false,
-            originPlanetId = originPlanet?.id
+            originPlanetId = originPlanet?.id,
+            isCompleted = false,
         ),
         transformations = emptyList(),
         originPlanet = originPlanet?.toCached(),
@@ -68,6 +69,14 @@ fun RemoteDragonBallCharacter.toCached(): CachedDragonBallCharacterModel =
 
 fun CachedDragonBallTransformation.toDomain (): DragonBallTransformation = DragonBallTransformation(
     id = id,
+    name = name,
+    image = image,
+    ki = ki,
+)
+
+fun RemoteDragonBallTransformation.toCached (characterId: Long): CachedDragonBallTransformation = CachedDragonBallTransformation(
+    id = id,
+    characterId = characterId,
     name = name,
     image = image,
     ki = ki,

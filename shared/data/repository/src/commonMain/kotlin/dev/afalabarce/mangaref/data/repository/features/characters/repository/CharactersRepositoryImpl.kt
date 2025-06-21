@@ -20,6 +20,18 @@ internal class CharactersRepositoryImpl internal constructor(private val factory
             factory.local.insertAllCharacters(listOf(response.toCached()))
             send(response.toDomain())
         } .collect { cached ->
+            if (!cached.character.isCompleted) {
+                val response = factory.remote.getRemoteCharacter(characterId).first()
+                factory.local.insertAllCharacters(
+                    characters = listOf(
+                        response.toCached().copy(
+                            character = cached.character.copy(isCompleted = true),
+                            transformations = response.transformations.map { transform -> transform.toCached(response.id) },
+                        )
+                    )
+                )
+                send(response.toDomain())
+            }
             send(cached.toDomain())
         }
     }
