@@ -20,4 +20,8 @@
     <string name="no_results_found_for_query">No results found for query</string>
     <string name="characters">Characters</string>
     <string name="planets">Planets</string>
+    <string name="ki_title">Ki Level:</string>
+    <string name="max_ki_title">Max Ki:</string>
+    <string name="race_title">Race:</string>
+    <string name="affiliation_title">Affiliation:</string>
 </resources>

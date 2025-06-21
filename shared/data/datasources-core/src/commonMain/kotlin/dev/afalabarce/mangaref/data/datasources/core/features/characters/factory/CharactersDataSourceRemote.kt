@@ -3,6 +3,7 @@ package dev.afalabarce.mangaref.data.datasources.core.features.characters.factor
 import dev.afalabarce.mangaref.data.datasources.core.remote.ApiService
 import dev.afalabarce.mangaref.data.datasources.features.characters.CharactersDatasource
 import dev.afalabarce.mangaref.models.features.characters.local.CachedDragonBallCharacter
+import dev.afalabarce.mangaref.models.features.characters.local.CachedDragonBallCharacterModel
 import dev.afalabarce.mangaref.models.features.characters.remote.RemoteDragonBallCharacter
 import dev.afalabarce.mangaref.models.features.pagination.PaginatedResult
 import kotlinx.coroutines.flow.Flow
@@ -23,17 +24,17 @@ class CharactersDataSourceRemote(private val apiService: ApiService): Characters
     override fun getAllCharacters(
         page: Int,
         limit: Int
-    ): Flow<List<CachedDragonBallCharacter>> {
+    ): Flow<List<CachedDragonBallCharacterModel>> {
         TODO("Not yet implemented")
     }
 
-    override fun getCharacter(characterId: Long): Flow<CachedDragonBallCharacter> {
+    override fun getCharacter(characterId: Long): Flow<CachedDragonBallCharacterModel> {
         TODO("Not yet implemented")
     }
 
 
 
-    override suspend fun insertAllCharacters(characters: List<CachedDragonBallCharacter>) {
+    override suspend fun insertAllCharacters(characters: List<CachedDragonBallCharacterModel>) {
         TODO("Not yet implemented")
     }
 }

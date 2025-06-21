@@ -15,5 +15,6 @@ data class DragonBallCharacter(
     val image: String,
     val affiliation: String,
     val isFavorite: Boolean,
-    val planets: List<DragonBallPlanet>
+    val planets: List<DragonBallPlanet>,
+    val transformations: List<DragonBallTransformation>
 )

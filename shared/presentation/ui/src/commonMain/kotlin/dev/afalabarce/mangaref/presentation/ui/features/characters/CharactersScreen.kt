@@ -16,8 +16,15 @@ import androidx.compose.ui.unit.dp
 import app.cash.paging.compose.collectAsLazyPagingItems
 import app.cash.paging.compose.itemKey
 import dev.afalabarce.mangaref.core.ui.theme.AppMaterialTheme
+import dev.afalabarce.mangaref.domain.models.features.characters.DragonBallCharacter
+import dev.afalabarce.mangaref.presentation.ui.Res
+import dev.afalabarce.mangaref.presentation.ui.affiliation_title
 import dev.afalabarce.mangaref.presentation.ui.features.common.ItemCard
+import dev.afalabarce.mangaref.presentation.ui.ki_title
+import dev.afalabarce.mangaref.presentation.ui.max_ki_title
+import dev.afalabarce.mangaref.presentation.ui.race_title
 import dev.afalabarce.mangaref.presentation.viewmodels.features.characters.CharactersViewModel
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -39,16 +46,28 @@ fun CharactersScreen(bottomAppBarScrollBehavior: BottomAppBarScrollBehavior, vie
             key = data.itemKey { character -> character.id }
         ) { index ->
             data[index]?.let { character ->
-                ItemCard(
-                    pictureUri = character.image,
-                    pictureHeight = 192.dp,
-                    modifier = Modifier.fillMaxWidth().padding(
-                        vertical = AppMaterialTheme.dimens.minBottomSurface
-                    )
-                ) {
-                    Text(text = character.name)
-                }
+                CharacterItem(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = AppMaterialTheme.dimens.minBottomSurface),
+                    character = character
+                )
             }
         }
+    }
+}
+
+@Composable
+fun CharacterItem(character: DragonBallCharacter, modifier: Modifier = Modifier){
+    ItemCard(
+        pictureUri = character.image,
+        pictureHeight = 192.dp,
+        modifier = modifier
+    ) {
+        Text(text = character.name, style = AppMaterialTheme.typography.titleMedium)
+        Text(text = "${stringResource(Res.string.ki_title)} ${character.ki}", style = AppMaterialTheme.typography.bodyMedium)
+        Text(text = "${stringResource(Res.string.max_ki_title)} ${character.maxKi}", style = AppMaterialTheme.typography.bodyMedium)
+        Text(text = "${stringResource(Res.string.race_title)} ${character.race}", style = AppMaterialTheme.typography.bodyMedium)
+        Text(text = "${stringResource(Res.string.affiliation_title)} ${character.affiliation}", style = AppMaterialTheme.typography.bodyMedium)
     }
 }

@@ -1,6 +1,7 @@
 @file:Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING", "NO_ACTUAL_FOR_EXPECT")
 package dev.afalabarce.mangaref.data.datasources.core.db
 
+import androidx.room.AutoMigration
 import androidx.room.ConstructedBy
 import androidx.room.Database
 import androidx.room.RoomDatabase
@@ -11,6 +12,7 @@ import dev.afalabarce.mangaref.data.datasources.core.features.favorites.local.Fa
 import dev.afalabarce.mangaref.data.datasources.core.features.planets.local.DragonBallPlanetsDao
 import dev.afalabarce.mangaref.models.features.characters.local.CachedDragonBallCharacter
 import dev.afalabarce.mangaref.models.features.planets.local.CachedDragonBallPlanet
+import dev.afalabarce.mangaref.models.features.transformations.local.CachedDragonBallTransformation
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 
@@ -23,9 +25,13 @@ expect object AppDatabaseConstructor : RoomDatabaseConstructor<AppDatabase> {
     entities = [
         CachedDragonBallCharacter::class,
         CachedDragonBallPlanet::class,
+        CachedDragonBallTransformation::class,
     ],
-    version = 1,
-    exportSchema = true
+    version = 2,
+    exportSchema = true,
+    autoMigrations = [
+        AutoMigration(from = 1, to = 2)
+    ]
 )
 @ConstructedBy(AppDatabaseConstructor::class)
 abstract class AppDatabase: RoomDatabase() {

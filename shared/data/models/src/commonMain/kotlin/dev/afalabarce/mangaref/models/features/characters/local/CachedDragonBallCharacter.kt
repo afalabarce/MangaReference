@@ -1,10 +1,23 @@
 package dev.afalabarce.mangaref.models.features.characters.local
 
 import androidx.room.ColumnInfo
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.Relation
+import dev.afalabarce.mangaref.models.features.planets.local.CachedDragonBallPlanet
+import dev.afalabarce.mangaref.models.features.transformations.local.CachedDragonBallTransformation
 
-@Entity(tableName = "characters")
+@Entity(tableName = "characters",
+    foreignKeys = [
+        androidx.room.ForeignKey(
+            entity = CachedDragonBallPlanet::class,
+            parentColumns = ["id"],
+            childColumns = ["origin_planet_id"],
+            onDelete = androidx.room.ForeignKey.CASCADE
+        )
+    ]
+)
 data class CachedDragonBallCharacter(
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "id")
@@ -27,4 +40,21 @@ data class CachedDragonBallCharacter(
     val affiliation: String,
     @ColumnInfo(name = "is_favorite")
     val isFavorite: Boolean,
+    @ColumnInfo(name = "origin_planet_id")
+    val originPlanetId: Long?
+)
+
+data class CachedDragonBallCharacterModel(
+    @Embedded
+    val character: CachedDragonBallCharacter,
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "character_id"
+    )
+    val transformations: List<CachedDragonBallTransformation>,
+    @Relation(
+        parentColumn = "origin_planet_id",
+        entityColumn = "id"
+    )
+    val originPlanet: CachedDragonBallPlanet?
 )

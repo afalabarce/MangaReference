@@ -18,4 +18,8 @@
     <string name="retry">Reintentar</string>
     <string name="characters">Personajes</string>
     <string name="planets">Planetas</string>
+    <string name="ki_title">Nivel de Ki:</string>
+    <string name="max_ki_title">Ki Máximo:</string>
+    <string name="race_title">Raza:</string>
+    <string name="affiliation_title">Afiliación:</string>
 </resources>
