@@ -49,9 +49,10 @@ fun ItemCard(
     pictureUri: String,
     pictureHeight: Dp,
     modifier: Modifier = Modifier,
+    onClick:() -> Unit = {},
     content: @Composable (ColumnScope.() -> Unit) = {}
 ) {
-    ElevatedCard(modifier = modifier) {
+    ElevatedCard(modifier = modifier, onClick = onClick) {
         ConstraintLayout(
             modifier = Modifier.padding(AppMaterialTheme.dimens.minEndSurface).fillMaxSize()
         ) {

@@ -37,7 +37,7 @@ fun RemoteDragonBallCharacter.toDomain(): DragonBallCharacter = DragonBallCharac
     affiliation = affiliation,
     isFavorite = false,
     planets = if (originPlanet == null) emptyList() else listOf(originPlanet!!.toDomain()),
-    transformations = transformations.map { it.toDomain() }.toList()
+    transformations = transformations.map { it.toDomain() }.toList(),
 )
 
 fun RemoteDragonBallTransformation.toDomain(): DragonBallTransformation = DragonBallTransformation(

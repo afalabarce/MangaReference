@@ -29,7 +29,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CharactersScreen(bottomAppBarScrollBehavior: BottomAppBarScrollBehavior, viewModel: CharactersViewModel = koinViewModel()) {
+fun CharactersScreen(bottomAppBarScrollBehavior: BottomAppBarScrollBehavior, viewModel: CharactersViewModel = koinViewModel(), onCharacterClick: (DragonBallCharacter) -> Unit) {
     val data = viewModel.characters.collectAsLazyPagingItems()
 
     LazyColumn(
@@ -51,18 +51,21 @@ fun CharactersScreen(bottomAppBarScrollBehavior: BottomAppBarScrollBehavior, vie
                         .fillMaxWidth()
                         .padding(vertical = AppMaterialTheme.dimens.minBottomSurface),
                     character = character
-                )
+                ){ currentCharacter ->
+                    onCharacterClick(currentCharacter)
+                }
             }
         }
     }
 }
 
 @Composable
-fun CharacterItem(character: DragonBallCharacter, modifier: Modifier = Modifier){
+fun CharacterItem(character: DragonBallCharacter, modifier: Modifier = Modifier, onClick: (DragonBallCharacter) -> Unit){
     ItemCard(
         pictureUri = character.image,
         pictureHeight = 192.dp,
-        modifier = modifier
+        modifier = modifier,
+        onClick = { onClick(character) }
     ) {
         Text(text = character.name, style = AppMaterialTheme.typography.titleMedium)
         Text(text = "${stringResource(Res.string.ki_title)} ${character.ki}", style = AppMaterialTheme.typography.bodyMedium)

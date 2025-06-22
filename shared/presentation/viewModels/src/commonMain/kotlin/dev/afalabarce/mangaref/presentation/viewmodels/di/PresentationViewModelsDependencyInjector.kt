@@ -2,6 +2,7 @@ package dev.afalabarce.mangaref.presentation.viewmodels.di
 
 import dev.afalabarce.mangaref.core.common.di.KoinModuleLoader
 import dev.afalabarce.mangaref.presentation.viewmodels.features.characters.CharactersViewModel
+import dev.afalabarce.mangaref.presentation.viewmodels.features.characters.details.CharacterDetailsViewModel
 import dev.afalabarce.mangaref.presentation.viewmodels.features.planets.PlanetsViewModel
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.viewModelOf
@@ -13,6 +14,7 @@ object PresentationViewModelsDependencyInjector : KoinModuleLoader {
             module {
                 viewModelOf(::CharactersViewModel)
                 viewModelOf(::PlanetsViewModel)
+                viewModelOf(::CharacterDetailsViewModel)
             }
         )
 }

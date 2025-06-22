@@ -2,6 +2,7 @@ package dev.afalabarce.mangaref.domain.usecases.di
 
 import dev.afalabarce.mangaref.core.common.di.KoinModuleLoader
 import dev.afalabarce.mangaref.domain.usecases.features.characters.GetAllCharactersUseCase
+import dev.afalabarce.mangaref.domain.usecases.features.characters.GetCharacterDetailsUseCase
 import dev.afalabarce.mangaref.domain.usecases.features.planets.GetAllPlanetsUseCase
 import dev.afalabarce.mangaref.domain.usecases.features.preferences.GetDeviceIdUseCase
 import dev.afalabarce.mangaref.domain.usecases.features.preferences.SetDeviceIdUseCase
@@ -17,6 +18,7 @@ object DomainUseCasesDependencyInjector : KoinModuleLoader {
                 factoryOf(::SetDeviceIdUseCase)
                 factoryOf(::GetAllCharactersUseCase)
                 factoryOf(::GetAllPlanetsUseCase)
+                factoryOf(::GetCharacterDetailsUseCase)
             }
         )
 }

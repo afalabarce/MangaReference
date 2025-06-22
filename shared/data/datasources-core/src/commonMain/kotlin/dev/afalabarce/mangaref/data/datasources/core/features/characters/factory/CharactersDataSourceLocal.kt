@@ -27,6 +27,8 @@ class CharactersDataSourceLocal(private val appDatabase: AppDatabase): Character
     }
 
     override suspend fun insertAllCharacters(characters: List<CachedDragonBallCharacterModel>) {
+        val planets = characters.mapNotNull { it.originPlanet }.distinctBy { it.id }
+        this.appDatabase.planetsDao().insertAllPlanets(planets)
         this.appDatabase.charactersDao().insertAllCharacters(characters.map { it.character })
         val transformations = characters.flatMap { character ->
             character.transformations.map { it.copy(characterId = character.character.id) } }

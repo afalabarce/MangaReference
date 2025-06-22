@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Upsert
 import dev.afalabarce.mangaref.models.features.characters.local.CachedDragonBallCharacter
 import dev.afalabarce.mangaref.models.features.characters.local.CachedDragonBallCharacterModel
 import dev.afalabarce.mangaref.models.features.planets.local.CachedDragonBallPlanet
@@ -21,7 +22,7 @@ interface DragonBallCharactersDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertCharacter(character: CachedDragonBallCharacter)
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Upsert
     suspend fun insertAllCharacters(characters: List<CachedDragonBallCharacter>)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)

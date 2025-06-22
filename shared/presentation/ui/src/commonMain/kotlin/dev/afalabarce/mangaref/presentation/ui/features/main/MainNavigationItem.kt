@@ -1,13 +1,18 @@
 package dev.afalabarce.mangaref.presentation.ui.features.main
 
-import dev.afalabarce.mangaref.domain.models.features.characters.DragonBallCharacter
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 object Characters
 @Serializable
 object Planets
+
 @Serializable
-data class CharacterDetails(val character: DragonBallCharacter)
+data class CharacterDetails(
+    @SerialName("characterId") val characterId: Long,
+)
 @Serializable
-data class PlanetDetails(val planet: DragonBallCharacter)
+data class PlanetDetails(
+    @SerialName("planetId") val planetId: Long,
+)

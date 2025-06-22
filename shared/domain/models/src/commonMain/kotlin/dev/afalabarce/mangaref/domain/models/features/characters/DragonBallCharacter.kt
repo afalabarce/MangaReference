@@ -16,5 +16,24 @@ data class DragonBallCharacter(
     val affiliation: String,
     val isFavorite: Boolean,
     val planets: List<DragonBallPlanet>,
-    val transformations: List<DragonBallTransformation>
-)
+    val transformations: List<DragonBallTransformation>) {
+
+    fun isEmptyCharacter() = this == empty()
+
+    companion object {
+        fun empty() = DragonBallCharacter(
+            id = 0,
+            name = "",
+            ki = "",
+            maxKi = "",
+            race = "",
+            gender = "",
+            description = "",
+            image = "",
+            affiliation = "",
+            isFavorite = false,
+            planets = emptyList(),
+            transformations = emptyList(),
+        )
+    }
+}

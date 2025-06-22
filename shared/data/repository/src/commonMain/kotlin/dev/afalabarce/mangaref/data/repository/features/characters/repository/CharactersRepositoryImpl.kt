@@ -5,10 +5,12 @@ import androidx.paging.PagingState
 import dev.afalabarce.mangaref.data.repository.features.characters.factory.CharactersFactory
 import dev.afalabarce.mangaref.data.repository.features.characters.mappers.toCached
 import dev.afalabarce.mangaref.data.repository.features.characters.mappers.toDomain
+import dev.afalabarce.mangaref.data.repository.features.planets.mappers.toCached
 import dev.afalabarce.mangaref.domain.models.features.characters.DragonBallCharacter
 import dev.afalabarce.mangaref.domain.repository.features.characters.CharactersRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.onEmpty
 
@@ -19,20 +21,26 @@ internal class CharactersRepositoryImpl internal constructor(private val factory
             val response = factory.remote.getRemoteCharacter(characterId).first()
             factory.local.insertAllCharacters(listOf(response.toCached()))
             send(response.toDomain())
-        } .collect { cached ->
+        }.collectLatest { cached ->
             if (!cached.character.isCompleted) {
                 val response = factory.remote.getRemoteCharacter(characterId).first()
                 factory.local.insertAllCharacters(
                     characters = listOf(
                         response.toCached().copy(
-                            character = cached.character.copy(isCompleted = true),
-                            transformations = response.transformations.map { transform -> transform.toCached(response.id) },
+                            character = cached.character.copy(isCompleted = true, originPlanetId = response.originPlanet?.id),
+                            originPlanet = response.originPlanet?.toCached(),
+                            transformations = response.transformations.map { transform ->
+                                transform.toCached(
+                                    response.id
+                                )
+                            },
                         )
                     )
                 )
                 send(response.toDomain())
+            } else {
+                send(cached.toDomain())
             }
-            send(cached.toDomain())
         }
     }
 
