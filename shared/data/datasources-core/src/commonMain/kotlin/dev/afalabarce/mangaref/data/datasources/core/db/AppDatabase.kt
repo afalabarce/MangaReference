@@ -5,6 +5,7 @@ import androidx.room.AutoMigration
 import androidx.room.ConstructedBy
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.RoomDatabase.*
 import androidx.room.RoomDatabaseConstructor
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import dev.afalabarce.mangaref.data.datasources.core.features.characters.local.DragonBallCharactersDao
@@ -46,7 +47,7 @@ abstract class AppDatabase: RoomDatabase() {
 }
 
 fun getRoomDatabase(
-    builder: RoomDatabase.Builder<AppDatabase>
+    builder: Builder<AppDatabase>
 ): AppDatabase {
     return builder
         .addMigrations()

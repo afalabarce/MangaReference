@@ -22,4 +22,7 @@
     <string name="max_ki_title">Ki Máximo:</string>
     <string name="race_title">Raza:</string>
     <string name="affiliation_title">Afiliación:</string>
+    <string name="tab_general">General</string>
+    <string name="tab_transformations">Transformaciones</string>
+    <string name="tab_planets">Planetas</string>
 </resources>

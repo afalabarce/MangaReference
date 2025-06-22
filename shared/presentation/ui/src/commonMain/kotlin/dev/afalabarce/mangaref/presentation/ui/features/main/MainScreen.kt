@@ -1,5 +1,7 @@
 package dev.afalabarce.mangaref.presentation.ui.features.main
 
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -32,20 +34,23 @@ import dev.chrisbanes.haze.materials.CupertinoMaterials
 import dev.chrisbanes.haze.materials.ExperimentalHazeMaterialsApi
 import dev.chrisbanes.haze.rememberHazeState
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalHazeMaterialsApi::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalHazeMaterialsApi::class,
+    ExperimentalSharedTransitionApi::class
+)
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
-    val bottomAppBarScrollBehavior =
-        BottomAppBarDefaults.exitAlwaysScrollBehavior(rememberBottomAppBarState())
+    val bottomAppBarScrollBehavior = BottomAppBarDefaults.exitAlwaysScrollBehavior(rememberBottomAppBarState())
     val hazeSource = rememberHazeState()
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
+
     Scaffold(
         modifier = Modifier.fillMaxSize().background(AppMaterialTheme.colorScheme.background)
             .hazeSource(hazeSource),
         bottomBar = {
             if (currentBackStackEntry?.destination?.hasRoute(Characters::class) == true ||
-                currentBackStackEntry?.destination?.hasRoute(Planets::class) == true) {
+                currentBackStackEntry?.destination?.hasRoute(Planets::class) == true
+            ) {
                 BottomNavigationBar(
                     modifier = Modifier.hazeEffect(
                         state = hazeSource,
@@ -57,34 +62,46 @@ fun MainScreen() {
             }
         }
     ) {
-        NavHost(
-            modifier = Modifier.fillMaxSize(),
-            navController = navController,
-            startDestination = Characters
-        ) {
-            composable<Characters> {
-                CharactersScreen(bottomAppBarScrollBehavior = bottomAppBarScrollBehavior) { clickedCharacter ->
-                    navController.navigate(CharacterDetails(clickedCharacter.id))
+        SharedTransitionLayout {
+            NavHost(
+                modifier = Modifier.fillMaxSize(),
+                navController = navController,
+                startDestination = Characters
+            ) {
+                composable<Characters> {
+                    CharactersScreen(
+                        bottomAppBarScrollBehavior = bottomAppBarScrollBehavior,
+                        sharedTransitionScope = this@SharedTransitionLayout,
+                        animatedContentScope = this@composable,
+                    ) { clickedCharacter ->
+                        navController.navigate(CharacterDetails(clickedCharacter.id))
+                    }
                 }
-            }
-            composable<Planets> {
-                PlanetsScreen(bottomAppBarScrollBehavior = bottomAppBarScrollBehavior)
-            }
+                composable<Planets> {
+                    PlanetsScreen(
+                        bottomAppBarScrollBehavior = bottomAppBarScrollBehavior,
+                        sharedTransitionScope = this@SharedTransitionLayout,
+                        animatedContentScope = this@composable,
+                    )
+                }
 
-            composable<CharacterDetails> { stackEntry ->
-                val currentCharacter = stackEntry.toRoute<CharacterDetails>()
-                CharacterDetailsScreen(
-                    bottomAppBarScrollBehavior = bottomAppBarScrollBehavior,
-                    characterId = currentCharacter.characterId
-                )
-            }
+                composable<CharacterDetails> { stackEntry ->
+                    val currentCharacter = stackEntry.toRoute<CharacterDetails>()
+                    CharacterDetailsScreen(
+                        bottomAppBarScrollBehavior = bottomAppBarScrollBehavior,
+                        characterId = currentCharacter.characterId,
+                        sharedTransitionScope = this@SharedTransitionLayout,
+                        animatedContentScope = this@composable,
+                    )
+                }
 
-            composable<PlanetDetails> { stackEntry ->
-                val currentPlanet = stackEntry.toRoute<PlanetDetails>()
-                PlanetDetailsScreen(
-                    bottomAppBarScrollBehavior = bottomAppBarScrollBehavior,
-                    planetId = currentPlanet.planetId
-                )
+                composable<PlanetDetails> { stackEntry ->
+                    val currentPlanet = stackEntry.toRoute<PlanetDetails>()
+                    PlanetDetailsScreen(
+                        bottomAppBarScrollBehavior = bottomAppBarScrollBehavior,
+                        planetId = currentPlanet.planetId
+                    )
+                }
             }
         }
     }

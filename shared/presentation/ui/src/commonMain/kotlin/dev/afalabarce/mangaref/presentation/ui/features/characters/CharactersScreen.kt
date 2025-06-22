@@ -1,5 +1,8 @@
 package dev.afalabarce.mangaref.presentation.ui.features.characters
 
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,6 +25,8 @@ import dev.afalabarce.mangaref.core.ui.theme.AppMaterialTheme
 import dev.afalabarce.mangaref.domain.models.features.characters.DragonBallCharacter
 import dev.afalabarce.mangaref.presentation.ui.Res
 import dev.afalabarce.mangaref.presentation.ui.affiliation_title
+import dev.afalabarce.mangaref.presentation.ui.features.common.CHARACTER_NAME_TRANSITION_KEY
+import dev.afalabarce.mangaref.presentation.ui.features.common.CHARACTER_PICTURE_TRANSITION_KEY
 import dev.afalabarce.mangaref.presentation.ui.features.common.ItemCard
 import dev.afalabarce.mangaref.presentation.ui.ic_dragon_ball
 import dev.afalabarce.mangaref.presentation.ui.ic_dragon_ball_female
@@ -34,9 +39,15 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
-fun CharactersScreen(bottomAppBarScrollBehavior: BottomAppBarScrollBehavior, viewModel: CharactersViewModel = koinViewModel(), onCharacterClick: (DragonBallCharacter) -> Unit) {
+fun CharactersScreen(
+    bottomAppBarScrollBehavior: BottomAppBarScrollBehavior,
+    viewModel: CharactersViewModel = koinViewModel(),
+    sharedTransitionScope: SharedTransitionScope,
+    animatedContentScope: AnimatedContentScope,
+    onCharacterClick: (DragonBallCharacter) -> Unit
+) {
     val data = viewModel.characters.collectAsLazyPagingItems()
 
     LazyColumn(
@@ -57,7 +68,9 @@ fun CharactersScreen(bottomAppBarScrollBehavior: BottomAppBarScrollBehavior, vie
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = AppMaterialTheme.dimens.minBottomSurface),
-                    character = character
+                    character = character,
+                    sharedTransitionScope = sharedTransitionScope,
+                    animatedContentScope = animatedContentScope,
                 ){ currentCharacter ->
                     onCharacterClick(currentCharacter)
                 }
@@ -66,47 +79,63 @@ fun CharactersScreen(bottomAppBarScrollBehavior: BottomAppBarScrollBehavior, vie
     }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun CharacterItem(character: DragonBallCharacter, modifier: Modifier = Modifier, onClick: (DragonBallCharacter) -> Unit){
+fun CharacterItem(
+    character: DragonBallCharacter,
+    modifier: Modifier = Modifier,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedContentScope: AnimatedContentScope,
+    onClick: (DragonBallCharacter) -> Unit
+){
     ItemCard(
         pictureUri = character.image,
         pictureHeight = 192.dp,
         modifier = modifier,
+        pictureTransitionKey = "$CHARACTER_PICTURE_TRANSITION_KEY${character.id}",
+        sharedTransitionScope = sharedTransitionScope,
+        animatedContentScope = animatedContentScope,
         onClick = { onClick(character) }
     ) {
-        Text(
-            text = character.name,
-            style = AppMaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold
-        )
-        Text(
-            text = "${stringResource(Res.string.ki_title)} ${character.ki}",
-            style = AppMaterialTheme.typography.bodyMedium
-        )
-        Text(
-            text = "${stringResource(Res.string.max_ki_title)} ${character.maxKi}",
-            style = AppMaterialTheme.typography.bodyMedium
-        )
-        Text(
-            text = "${stringResource(Res.string.race_title)} ${character.race}",
-            style = AppMaterialTheme.typography.bodyMedium
-        )
-        Text(
-            text = "${stringResource(Res.string.affiliation_title)} ${character.affiliation}",
-            style = AppMaterialTheme.typography.bodyMedium
-        )
-        Image(
-            modifier = Modifier
-                .width(AppMaterialTheme.dimens.smallIconSize)
-                .padding(top = AppMaterialTheme.dimens.minTopSurface),
-            painter = painterResource(
-                when (character.gender) {
-                    "Male" -> Res.drawable.ic_dragon_ball_male
-                    "Female" -> Res.drawable.ic_dragon_ball_female
-                    else -> Res.drawable.ic_dragon_ball
-                }
-            ),
-            contentDescription = null
-        )
+        with(sharedTransitionScope) {
+            Text(
+                text = character.name,
+                style = AppMaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.sharedElement(
+                    sharedContentState = sharedTransitionScope.rememberSharedContentState(key = "$CHARACTER_NAME_TRANSITION_KEY${character.id}"),
+                    animatedVisibilityScope = animatedContentScope
+                )
+            )
+            Text(
+                text = "${stringResource(Res.string.ki_title)} ${character.ki}",
+                style = AppMaterialTheme.typography.bodyMedium
+            )
+            Text(
+                text = "${stringResource(Res.string.max_ki_title)} ${character.maxKi}",
+                style = AppMaterialTheme.typography.bodyMedium
+            )
+            Text(
+                text = "${stringResource(Res.string.race_title)} ${character.race}",
+                style = AppMaterialTheme.typography.bodyMedium
+            )
+            Text(
+                text = "${stringResource(Res.string.affiliation_title)} ${character.affiliation}",
+                style = AppMaterialTheme.typography.bodyMedium
+            )
+            Image(
+                modifier = Modifier
+                    .width(AppMaterialTheme.dimens.smallIconSize)
+                    .padding(top = AppMaterialTheme.dimens.minTopSurface),
+                painter = painterResource(
+                    when (character.gender) {
+                        "Male" -> Res.drawable.ic_dragon_ball_male
+                        "Female" -> Res.drawable.ic_dragon_ball_female
+                        else -> Res.drawable.ic_dragon_ball
+                    }
+                ),
+                contentDescription = null
+            )
+        }
     }
 }

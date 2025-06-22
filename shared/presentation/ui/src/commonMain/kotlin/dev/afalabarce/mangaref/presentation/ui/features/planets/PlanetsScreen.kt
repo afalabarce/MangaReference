@@ -1,5 +1,8 @@
 package dev.afalabarce.mangaref.presentation.ui.features.planets
 
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,9 +25,14 @@ import dev.afalabarce.mangaref.core.ui.theme.AppMaterialTheme
 import dev.afalabarce.mangaref.presentation.viewmodels.features.planets.PlanetsViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
-fun PlanetsScreen(bottomAppBarScrollBehavior: BottomAppBarScrollBehavior, viewModel: PlanetsViewModel = koinViewModel()){
+fun PlanetsScreen(
+    bottomAppBarScrollBehavior: BottomAppBarScrollBehavior,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedContentScope: AnimatedContentScope,
+    viewModel: PlanetsViewModel = koinViewModel()
+){
     val data = viewModel.planets.collectAsLazyPagingItems()
 
     LazyColumn(
