@@ -19,14 +19,13 @@ internal class CharactersRepositoryImpl internal constructor(private val factory
     override fun getCharacterById(characterId: Long): Flow<DragonBallCharacter> = channelFlow {
         factory.local.getCharacter(characterId).onEmpty {
             val response = factory.remote.getRemoteCharacter(characterId).first()
-            factory.local.insertAllCharacters(listOf(response.toCached()))
+            factory.local.insertCharacter(response.toCached())
             send(response.toDomain())
         }.collectLatest { cached ->
             if (!cached.character.isCompleted) {
                 val response = factory.remote.getRemoteCharacter(characterId).first()
-                factory.local.insertAllCharacters(
-                    characters = listOf(
-                        response.toCached().copy(
+                factory.local.insertCharacter(
+                    response.toCached().copy(
                             character = cached.character.copy(isCompleted = true, originPlanetId = response.originPlanet?.id),
                             originPlanet = response.originPlanet?.toCached(),
                             transformations = response.transformations.map { transform ->
@@ -35,7 +34,6 @@ internal class CharactersRepositoryImpl internal constructor(private val factory
                                 )
                             },
                         )
-                    )
                 )
                 send(response.toDomain())
             } else {

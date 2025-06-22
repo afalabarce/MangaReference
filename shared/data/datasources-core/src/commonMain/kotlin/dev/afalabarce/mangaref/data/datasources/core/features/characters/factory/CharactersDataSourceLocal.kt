@@ -34,4 +34,13 @@ class CharactersDataSourceLocal(private val appDatabase: AppDatabase): Character
             character.transformations.map { it.copy(characterId = character.character.id) } }
         this.appDatabase.charactersDao().insertAllCharacterTransformation(transformations)
     }
+
+    override suspend fun insertCharacter(character: CachedDragonBallCharacterModel) {
+        character.originPlanet?.let { planet ->
+            this.appDatabase.planetsDao().insertAllPlanets(listOf(planet))
+        }
+
+        this.appDatabase.charactersDao().insertCharacter(character.character)
+        this.appDatabase.charactersDao().insertAllCharacterTransformation(characterTransformations = character.transformations)
+    }
 }

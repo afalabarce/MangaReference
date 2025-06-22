@@ -13,4 +13,6 @@ interface CharactersDatasource {
     fun getCharacter(characterId: Long): Flow<CachedDragonBallCharacterModel>
     fun getRemoteCharacter(characterId: Long): Flow<RemoteDragonBallCharacter>
     suspend fun insertAllCharacters(characters: List<CachedDragonBallCharacterModel>)
+
+    suspend fun insertCharacter(character: CachedDragonBallCharacterModel)
 }

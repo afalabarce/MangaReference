@@ -37,4 +37,8 @@ class CharactersDataSourceRemote(private val apiService: ApiService): Characters
     override suspend fun insertAllCharacters(characters: List<CachedDragonBallCharacterModel>) {
         TODO("Not yet implemented")
     }
+
+    override suspend fun insertCharacter(character: CachedDragonBallCharacterModel) {
+        TODO("Not yet implemented")
+    }
 }
