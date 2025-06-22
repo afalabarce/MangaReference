@@ -1,9 +1,11 @@
 package dev.afalabarce.mangaref.presentation.ui.features.characters
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.BottomAppBarScrollBehavior
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -12,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import app.cash.paging.compose.collectAsLazyPagingItems
 import app.cash.paging.compose.itemKey
@@ -20,10 +23,14 @@ import dev.afalabarce.mangaref.domain.models.features.characters.DragonBallChara
 import dev.afalabarce.mangaref.presentation.ui.Res
 import dev.afalabarce.mangaref.presentation.ui.affiliation_title
 import dev.afalabarce.mangaref.presentation.ui.features.common.ItemCard
+import dev.afalabarce.mangaref.presentation.ui.ic_dragon_ball
+import dev.afalabarce.mangaref.presentation.ui.ic_dragon_ball_female
+import dev.afalabarce.mangaref.presentation.ui.ic_dragon_ball_male
 import dev.afalabarce.mangaref.presentation.ui.ki_title
 import dev.afalabarce.mangaref.presentation.ui.max_ki_title
 import dev.afalabarce.mangaref.presentation.ui.race_title
 import dev.afalabarce.mangaref.presentation.viewmodels.features.characters.CharactersViewModel
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -67,10 +74,39 @@ fun CharacterItem(character: DragonBallCharacter, modifier: Modifier = Modifier,
         modifier = modifier,
         onClick = { onClick(character) }
     ) {
-        Text(text = character.name, style = AppMaterialTheme.typography.titleMedium)
-        Text(text = "${stringResource(Res.string.ki_title)} ${character.ki}", style = AppMaterialTheme.typography.bodyMedium)
-        Text(text = "${stringResource(Res.string.max_ki_title)} ${character.maxKi}", style = AppMaterialTheme.typography.bodyMedium)
-        Text(text = "${stringResource(Res.string.race_title)} ${character.race}", style = AppMaterialTheme.typography.bodyMedium)
-        Text(text = "${stringResource(Res.string.affiliation_title)} ${character.affiliation}", style = AppMaterialTheme.typography.bodyMedium)
+        Text(
+            text = character.name,
+            style = AppMaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold
+        )
+        Text(
+            text = "${stringResource(Res.string.ki_title)} ${character.ki}",
+            style = AppMaterialTheme.typography.bodyMedium
+        )
+        Text(
+            text = "${stringResource(Res.string.max_ki_title)} ${character.maxKi}",
+            style = AppMaterialTheme.typography.bodyMedium
+        )
+        Text(
+            text = "${stringResource(Res.string.race_title)} ${character.race}",
+            style = AppMaterialTheme.typography.bodyMedium
+        )
+        Text(
+            text = "${stringResource(Res.string.affiliation_title)} ${character.affiliation}",
+            style = AppMaterialTheme.typography.bodyMedium
+        )
+        Image(
+            modifier = Modifier
+                .width(AppMaterialTheme.dimens.smallIconSize)
+                .padding(top = AppMaterialTheme.dimens.minTopSurface),
+            painter = painterResource(
+                when (character.gender) {
+                    "Male" -> Res.drawable.ic_dragon_ball_male
+                    "Female" -> Res.drawable.ic_dragon_ball_female
+                    else -> Res.drawable.ic_dragon_ball
+                }
+            ),
+            contentDescription = null
+        )
     }
 }

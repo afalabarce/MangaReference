@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import androidx.room.Upsert
 import dev.afalabarce.mangaref.models.features.characters.local.CachedDragonBallCharacter
 import dev.afalabarce.mangaref.models.features.characters.local.CachedDragonBallCharacterModel
@@ -19,7 +20,7 @@ interface DragonBallCharactersDao {
     @Query("select * from characters where id=:characterId")
     fun getCharacter(characterId: Long): Flow<CachedDragonBallCharacterModel>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Update
     suspend fun insertCharacter(character: CachedDragonBallCharacter)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
