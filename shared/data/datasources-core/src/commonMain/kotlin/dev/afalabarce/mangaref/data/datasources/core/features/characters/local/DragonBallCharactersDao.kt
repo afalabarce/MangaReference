@@ -19,7 +19,7 @@ interface DragonBallCharactersDao {
     @Query("select * from characters where id=:characterId")
     fun getCharacter(characterId: Long): Flow<CachedDragonBallCharacterModel>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCharacter(character: CachedDragonBallCharacter)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
