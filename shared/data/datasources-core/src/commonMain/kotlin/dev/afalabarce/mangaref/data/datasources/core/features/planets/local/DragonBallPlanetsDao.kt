@@ -15,9 +15,9 @@ interface DragonBallPlanetsDao {
     @Query("select * from planets where id=:planetId")
     fun getPlanet(planetId: Long): Flow<CachedDragonBallPlanet>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertPlanet(planet: CachedDragonBallPlanet)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertAllPlanets(planets: List<CachedDragonBallPlanet>)
 }

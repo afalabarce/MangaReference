@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Update
 import androidx.room.Upsert
 import dev.afalabarce.mangaref.models.features.characters.local.CachedDragonBallCharacter
@@ -14,9 +15,11 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface DragonBallCharactersDao {
+    @Transaction
     @Query("select distinct * from characters order by id asc limit :limit offset :page*:limit")
     fun getAllCharacters(page: Int, limit: Int): Flow<List<CachedDragonBallCharacterModel>>
 
+    @Transaction
     @Query("select * from characters where id=:characterId")
     fun getCharacter(characterId: Long): Flow<CachedDragonBallCharacterModel>
 
