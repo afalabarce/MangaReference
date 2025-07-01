@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -234,7 +235,40 @@ private fun TabInfo(character: DragonBallCharacter, modifier: Modifier = Modifie
 
 @Composable
 private fun GeneralDataInfo(character: DragonBallCharacter) {
-    Text(text = character.name)
+    ConstraintLayout(modifier = Modifier.fillMaxSize()) {
+        val (race, gender) = createRefs()
+        val tipsSeparation = AppMaterialTheme.dimens.appMargin
+        Text(
+            text = character.gender,
+            modifier = Modifier.padding(
+                vertical = AppMaterialTheme.dimens.appMargin
+            ).constrainAs(gender) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start, margin = tipsSeparation)
+                    end.linkTo(race.start, margin = tipsSeparation)
+                    width = Dimension.fillToConstraints
+                }.border(
+                    width = 1.dp,
+                    color = AppMaterialTheme.colorScheme.onSecondaryContainer
+                ),
+            textAlign = TextAlign.Center,
+        )
+        Text(
+            text = character.race,
+            modifier = Modifier.padding(
+                vertical = AppMaterialTheme.dimens.appMargin
+            ).constrainAs(race) {
+                top.linkTo(gender.top)
+                start.linkTo(gender.end)
+                end.linkTo(parent.end, margin = tipsSeparation)
+                width = Dimension.fillToConstraints
+            }.border(
+                width = 1.dp,
+                color = AppMaterialTheme.colorScheme.onSecondaryContainer
+            ),
+            textAlign = TextAlign.Center,
+        )
+    }
 }
 
 @Composable
