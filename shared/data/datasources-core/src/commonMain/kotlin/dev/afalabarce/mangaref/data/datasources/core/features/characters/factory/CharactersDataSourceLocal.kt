@@ -41,6 +41,9 @@ class CharactersDataSourceLocal(private val appDatabase: AppDatabase): Character
         }
 
         this.appDatabase.charactersDao().insertCharacter(character.character)
-        this.appDatabase.charactersDao().insertAllCharacterTransformation(characterTransformations = character.transformations)
+        this.appDatabase.charactersDao().insertAllCharacterTransformation(
+            characterTransformations = character.transformations.map {
+                it.copy(characterId = character.character.id) }.toList()
+        )
     }
 }
