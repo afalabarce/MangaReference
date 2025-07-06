@@ -24,6 +24,7 @@ import androidx.savedstate.SavedState
 import dev.afalabarce.mangaref.core.ui.theme.AppMaterialTheme
 import dev.afalabarce.mangaref.domain.models.features.characters.DragonBallCharacter
 import dev.afalabarce.mangaref.domain.models.features.planets.DragonBallPlanet
+import dev.afalabarce.mangaref.presentation.ui.MainNavigator
 import dev.afalabarce.mangaref.presentation.ui.features.characters.CharacterDetailsScreen
 import dev.afalabarce.mangaref.presentation.ui.features.characters.CharactersScreen
 import dev.afalabarce.mangaref.presentation.ui.features.planets.PlanetDetailsScreen
@@ -92,7 +93,11 @@ fun MainScreen() {
                         characterId = currentCharacter.characterId,
                         sharedTransitionScope = this@SharedTransitionLayout,
                         animatedContentScope = this@composable,
-                    )
+                    ){
+                        navController.navigate(Characters){
+                            popUpTo<Characters>()
+                        }
+                    }
                 }
 
                 composable<PlanetDetails> { stackEntry ->

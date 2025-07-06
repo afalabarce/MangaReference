@@ -54,6 +54,9 @@ infix fun LocalDateTime.plusMonth(month: Int): LocalDateTime = LocalDate(
     )
 }
 
+val String.Companion.Empty
+    get() = ""
+
 fun LocalDate.getMondayOfWeek(): LocalDate =
     this.plus(
         (DayOfWeek.MONDAY.ordinal - this.dayOfWeek.ordinal).toLong(), DateTimeUnit.DAY

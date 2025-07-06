@@ -27,4 +27,7 @@
     <string name="tab_general">General</string>
     <string name="tab_transformations">Transformations</string>
     <string name="tab_planets">Planets</string>
+    <string name="gender_label">Gender</string>
+    <string name="description_label">Character's history</string>
+    <string name="generic_ki_levels_section_title">Ki Levels</string>">
 </resources>

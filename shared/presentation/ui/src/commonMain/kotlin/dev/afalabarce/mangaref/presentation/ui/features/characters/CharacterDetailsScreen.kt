@@ -3,10 +3,12 @@ package dev.afalabarce.mangaref.presentation.ui.features.characters
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -14,9 +16,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.BottomAppBarScrollBehavior
-import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -30,16 +34,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -51,17 +60,26 @@ import coil3.compose.AsyncImage
 import dev.afalabarce.mangaref.core.ui.theme.AppMaterialTheme
 import dev.afalabarce.mangaref.domain.models.features.characters.DragonBallCharacter
 import dev.afalabarce.mangaref.presentation.ui.Res
+import dev.afalabarce.mangaref.presentation.ui.affiliation_title
+import dev.afalabarce.mangaref.presentation.ui.description_label
 import dev.afalabarce.mangaref.presentation.ui.features.common.CHARACTER_PICTURE_TRANSITION_KEY
-import dev.afalabarce.mangaref.presentation.ui.features.main.Characters
+import dev.afalabarce.mangaref.presentation.ui.features.common.asKiValue
+import dev.afalabarce.mangaref.presentation.ui.gender_label
+import dev.afalabarce.mangaref.presentation.ui.generic_ki_levels_section_title
+import dev.afalabarce.mangaref.presentation.ui.ic_dragon_back
 import dev.afalabarce.mangaref.presentation.ui.ic_dragon_ball_ol
 import dev.afalabarce.mangaref.presentation.ui.ic_planet
 import dev.afalabarce.mangaref.presentation.ui.ic_transformation
+import dev.afalabarce.mangaref.presentation.ui.ki_title
+import dev.afalabarce.mangaref.presentation.ui.max_ki_title
+import dev.afalabarce.mangaref.presentation.ui.race_title
 import dev.afalabarce.mangaref.presentation.ui.tab_general
 import dev.afalabarce.mangaref.presentation.ui.tab_planets
 import dev.afalabarce.mangaref.presentation.ui.tab_transformations
 import dev.afalabarce.mangaref.presentation.viewmodels.features.characters.details.CharacterDetailsViewModel
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -73,7 +91,8 @@ fun CharacterDetailsScreen(
     characterId: Long,
     sharedTransitionScope: SharedTransitionScope,
     animatedContentScope: AnimatedContentScope,
-    viewModel: CharacterDetailsViewModel = koinViewModel()
+    viewModel: CharacterDetailsViewModel = koinViewModel(),
+    onBack: () -> Unit
 ) {
     val currentCharacter by viewModel.character.collectAsStateWithLifecycle()
     LaunchedEffect(currentCharacter.isEmptyCharacter()) {
@@ -87,8 +106,21 @@ fun CharacterDetailsScreen(
         .padding(top = AppMaterialTheme.dimens.statusBarSize, bottom = AppMaterialTheme.dimens.minBottomSurface)
         .padding(horizontal = AppMaterialTheme.dimens.startSurface)
     ) {
-        val (picture, dataCard) = createRefs()
+        val (back,picture, dataCard) = createRefs()
 
+        Image(
+            painter = painterResource(Res.drawable.ic_dragon_back),
+            contentDescription = null,
+            modifier = Modifier.clip(CircleShape).constrainAs(back){
+                top.linkTo(parent.top)
+                start.linkTo(parent.start)
+                width = Dimension.value(64.dp)
+                height = Dimension.value(64.dp)
+            }.zIndex(Float.MAX_VALUE)
+                .clickable(enabled = true){
+                    onBack()
+                },
+        )
         with(sharedTransitionScope) {
             AsyncImage(
                 model = currentCharacter.image,
@@ -102,7 +134,7 @@ fun CharacterDetailsScreen(
                     end.linkTo(parent.end)
                     width = Dimension.wrapContent
                     height = Dimension.percent(0.45f)
-                }.zIndex(Float.MAX_VALUE),
+                }.zIndex(Float.MAX_VALUE/2),
 
             )
 
@@ -159,7 +191,9 @@ private fun CharacterData(character: DragonBallCharacter) {
                 top.linkTo(characterName.bottom, margin = 15.dp)
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)
+                bottom.linkTo(parent.bottom)
                 width = Dimension.fillToConstraints
+                height = Dimension.fillToConstraints
             },
         )
     }
@@ -168,6 +202,7 @@ private fun CharacterData(character: DragonBallCharacter) {
 @Composable
 private fun TabInfo(character: DragonBallCharacter, modifier: Modifier = Modifier) {
     val tabNavController = rememberNavController()
+    var tabHeight by remember { mutableStateOf(0.dp) }
     var selectedTab by rememberSaveable {
         mutableIntStateOf(CharacterSection.GENERAL.ordinal)
     }
@@ -214,12 +249,14 @@ private fun TabInfo(character: DragonBallCharacter, modifier: Modifier = Modifie
             }
         }
         NavHost(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize().graphicsLayer{
+                tabHeight = size.height.dp
+            },
             navController = tabNavController,
             startDestination = CharacterSection.GENERAL.name
         ) {
             composable(CharacterSection.GENERAL.name) { stackEntry ->
-                GeneralDataInfo(character)
+                GeneralDataInfo(character, Modifier.fillMaxSize())
             }
             composable(CharacterSection.TRANSFORMATIONS.name) { stackEntry ->
                 TransformationsDataInfo(character)
@@ -234,40 +271,177 @@ private fun TabInfo(character: DragonBallCharacter, modifier: Modifier = Modifie
 }
 
 @Composable
-private fun GeneralDataInfo(character: DragonBallCharacter) {
-    ConstraintLayout(modifier = Modifier.fillMaxSize()) {
-        val (race, gender) = createRefs()
-        val tipsSeparation = AppMaterialTheme.dimens.appMargin
-        Text(
-            text = character.gender,
-            modifier = Modifier.padding(
-                vertical = AppMaterialTheme.dimens.appMargin
-            ).constrainAs(gender) {
+private fun GeneralDataInfo(character: DragonBallCharacter, modifier: Modifier) {
+    val scrollState = rememberScrollState()
+    Column(modifier = modifier.verticalScroll(scrollState)) {
+        ConstraintLayout(modifier = Modifier
+            .padding(all = AppMaterialTheme.dimens.appMargin)
+        ) {
+            val tipsSeparation = AppMaterialTheme.dimens.appMargin
+            val (descriptionLabel, description, race, raceLabel, gender, genderLabel) = createRefs()
+            val (kiLevelsSection, rectangleKiSection, kiLevelTitle, kiLevel, maxKiLevelTitle, maxKiLevel) = createRefs()
+            val (affiliationTitle, affiliation) = createRefs()
+
+            Text(
+                text = stringResource(resource = Res.string.description_label),
+                modifier = Modifier.padding(
+                    vertical = AppMaterialTheme.dimens.appMargin
+                ).constrainAs(descriptionLabel) {
                     top.linkTo(parent.top)
                     start.linkTo(parent.start, margin = tipsSeparation)
-                    end.linkTo(race.start, margin = tipsSeparation)
+                    end.linkTo(parent.end, margin = tipsSeparation)
+                    width = Dimension.fillToConstraints
+                }
+            )
+            Text(
+                text = character.description,
+                fontSize = 10.sp,
+                modifier = Modifier.constrainAs(description) {
+                    top.linkTo(descriptionLabel.bottom)
+                    start.linkTo(descriptionLabel.start)
+                    end.linkTo(descriptionLabel.end)
+                }.border(
+                    width = 1.dp,
+                    shape = RoundedCornerShape(AppMaterialTheme.dimens.cornerRadius),
+                    color = AppMaterialTheme.colorScheme.onSecondaryContainer
+                ).padding(AppMaterialTheme.dimens.cornerRadius)
+            )
+            Text(
+                text = stringResource(resource = Res.string.gender_label),
+                modifier = Modifier.padding(
+                    vertical = AppMaterialTheme.dimens.appMargin
+                ).constrainAs(genderLabel) {
+                    top.linkTo(description.bottom)
+                    start.linkTo(parent.start, margin = tipsSeparation)
+                    end.linkTo(raceLabel.start, margin = tipsSeparation)
+                    width = Dimension.fillToConstraints
+                }
+            )
+            Text(
+                text = character.gender,
+                modifier = Modifier.clip(RoundedCornerShape(50)).constrainAs(gender) {
+                    top.linkTo(genderLabel.bottom)
+                    start.linkTo(genderLabel.start)
+                    end.linkTo(genderLabel.end)
                     width = Dimension.fillToConstraints
                 }.border(
                     width = 1.dp,
-                    color = AppMaterialTheme.colorScheme.onSecondaryContainer
+                    color = AppMaterialTheme.colorScheme.onSecondaryContainer,
+                    shape = RoundedCornerShape(50)
                 ),
-            textAlign = TextAlign.Center,
-        )
-        Text(
-            text = character.race,
-            modifier = Modifier.padding(
-                vertical = AppMaterialTheme.dimens.appMargin
-            ).constrainAs(race) {
-                top.linkTo(gender.top)
-                start.linkTo(gender.end)
-                end.linkTo(parent.end, margin = tipsSeparation)
-                width = Dimension.fillToConstraints
-            }.border(
-                width = 1.dp,
-                color = AppMaterialTheme.colorScheme.onSecondaryContainer
-            ),
-            textAlign = TextAlign.Center,
-        )
+                textAlign = TextAlign.Center,
+            )
+            Text(
+                text = stringResource(resource = Res.string.race_title),
+                modifier = Modifier.padding(
+                    vertical = AppMaterialTheme.dimens.appMargin
+                ).constrainAs(raceLabel) {
+                    top.linkTo(genderLabel.top)
+                    start.linkTo(genderLabel.end, margin = tipsSeparation)
+                    end.linkTo(parent.end, margin = tipsSeparation)
+                    width = Dimension.fillToConstraints
+                }
+            )
+            Text(
+                text = character.race,
+                modifier = Modifier.clip(RoundedCornerShape(0.5f)).constrainAs(race) {
+                    top.linkTo(raceLabel.bottom)
+                    start.linkTo(raceLabel.start)
+                    end.linkTo(raceLabel.end)
+                    width = Dimension.fillToConstraints
+                }.border(
+                    width = 1.dp,
+                    color = AppMaterialTheme.colorScheme.onSecondaryContainer,
+                    RoundedCornerShape(50)
+                ),
+                textAlign = TextAlign.Center,
+            )
+            Text(
+                text = stringResource(resource = Res.string.generic_ki_levels_section_title),
+                modifier = Modifier.padding(
+                    vertical = AppMaterialTheme.dimens.appMargin
+                ).constrainAs(kiLevelsSection) {
+                    top.linkTo(gender.bottom)
+                    start.linkTo(parent.start, margin = tipsSeparation)
+                    end.linkTo(parent.end, margin = tipsSeparation)
+                    width = Dimension.fillToConstraints
+                },
+                fontWeight = FontWeight.Bold,
+            )
+            Text(
+                text = stringResource(resource = Res.string.ki_title),
+                modifier = Modifier.constrainAs(kiLevelTitle){
+                    top.linkTo(kiLevelsSection.bottom)
+                    start.linkTo(parent.start, margin = tipsSeparation)
+                    end.linkTo(maxKiLevelTitle.start, margin = tipsSeparation)
+                    width = Dimension.fillToConstraints
+                }
+            )
+            Text(
+                text = stringResource(Res.string.max_ki_title),
+                modifier = Modifier.constrainAs(maxKiLevelTitle){
+                    top.linkTo(kiLevelTitle.top)
+                    start.linkTo(kiLevelTitle.end, margin = tipsSeparation)
+                    end.linkTo(parent.end, margin = tipsSeparation)
+                    width = Dimension.fillToConstraints
+                }
+            )
+            Text(
+                text = character.ki,
+                modifier = Modifier.constrainAs(kiLevel){
+                    top.linkTo(kiLevelTitle.bottom)
+                    start.linkTo(kiLevelTitle.start)
+                    end.linkTo(kiLevelTitle.end)
+                    width = Dimension.fillToConstraints
+                }
+            )
+            Text(
+                text = character.maxKi,
+                modifier = Modifier.constrainAs(maxKiLevel){
+                    top.linkTo(maxKiLevelTitle.bottom)
+                    start.linkTo(maxKiLevelTitle.start)
+                    end.linkTo(maxKiLevelTitle.end)
+                    width = Dimension.fillToConstraints
+                }
+            )
+            Box(
+                modifier = Modifier.constrainAs(rectangleKiSection) {
+                    top.linkTo(gender.bottom, margin = tipsSeparation)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    bottom.linkTo(kiLevel.bottom, margin = tipsSeparation.times(-1))
+                    width = Dimension.fillToConstraints
+                    height = Dimension.fillToConstraints
+                }.border(
+                    width = 1.dp,
+                    color = AppMaterialTheme.colorScheme.onSecondaryContainer,
+                    shape = RoundedCornerShape(AppMaterialTheme.dimens.cornerRadius)
+                )
+            )
+            Text(
+                text = stringResource(resource = Res.string.affiliation_title),
+                modifier = Modifier.padding(
+                    vertical = AppMaterialTheme.dimens.appMargin
+                ).constrainAs(affiliationTitle) {
+                    top.linkTo(rectangleKiSection.bottom, margin = tipsSeparation)
+                    start.linkTo(parent.start, margin = tipsSeparation)
+                    end.linkTo(parent.end, margin = tipsSeparation)
+                    width = Dimension.fillToConstraints
+                }
+            )
+            Text(
+                text = character.affiliation,
+                modifier = Modifier.constrainAs(affiliation) {
+                    top.linkTo(affiliationTitle.bottom)
+                    start.linkTo(parent.start, margin = tipsSeparation)
+                    width = Dimension.wrapContent
+                }.border(
+                    width = 1.dp,
+                    color = AppMaterialTheme.colorScheme.onSecondaryContainer,
+                    shape = RoundedCornerShape(50)
+                ).padding(horizontal = AppMaterialTheme.dimens.cornerRadius.times(2))
+            )
+        }
     }
 }
 
